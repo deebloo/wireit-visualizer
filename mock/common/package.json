@@ -1,0 +1,11 @@
+{
+  "name": "common",
+  "wireit": {
+    "build": {
+      "command": "echo 'build'",
+      "dependencies": [
+        "../core:build"
+      ]
+    }
+  }
+}

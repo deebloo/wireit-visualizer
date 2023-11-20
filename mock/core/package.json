@@ -1,0 +1,8 @@
+{
+  "name": "core",
+  "wireit": {
+    "build": {
+      "command": "echo 'build'"
+    }
+  }
+}
