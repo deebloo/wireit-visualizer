@@ -4,8 +4,12 @@
     "build": {
       "command": "echo 'build'",
       "dependencies": [
-        "../core:build"
+        "../core:build",
+        "css"
       ]
+    },
+    "css": {
+      "command": "echo 'css'"
     }
   }
 }

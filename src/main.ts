@@ -15,7 +15,7 @@ nunjucks.configure("views", {
 app.get("/", function (_req, res) {
   const graph = find_deps("package.json", new Graph([]));
 
-  res.render("index.njks", {
+  res.render("index.html", {
     graph: graph.toString(),
   });
 });

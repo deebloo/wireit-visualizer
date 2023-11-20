@@ -2,7 +2,13 @@
   "name": "core",
   "wireit": {
     "build": {
-      "command": "echo 'build'"
+      "command": "echo 'build'",
+      "dependencies": [
+        "tsc"
+      ]
+    },
+    "tsc": {
+      "command": "echo 'tsc'"
     }
   }
 }

@@ -2,7 +2,9 @@
   "name": "wireit-visualizer",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "main": "target/main.js",
+  "bin": "target/main.js",
   "author": "",
   "license": "ISC",
   "scripts": {
@@ -15,7 +17,6 @@
       "service": true,
       "dependencies": [
         "build",
-        "./mock/core:build",
         "./mock/common:build",
         "./mock/feature1:build",
         "./mock/feature2:build"
@@ -31,6 +32,9 @@
       "output": [
         "target/**",
         "tsconfig.tsbuildinfo"
+      ],
+      "dependencies": [
+        "./mock/core:build"
       ]
     }
   },
