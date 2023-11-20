@@ -5,7 +5,7 @@ import { MermaidGraph } from "./graph.js";
 import { find_deps } from "./find_deps.js";
 
 var app = express();
-const PORT = 3001;
+const PORT = 4200;
 
 nunjucks.configure("views", {
   autoescape: true,
