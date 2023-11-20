@@ -18,6 +18,8 @@ export class Graph {
       this.#entries.map((line) => "  " + line.join(" ") + ";")
     );
 
+    console.log(Array.from(dedupe).join("\n"));
+
     return Array.from(dedupe).join("\n");
   }
 }

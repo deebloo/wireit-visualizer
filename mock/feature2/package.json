@@ -4,7 +4,8 @@
     "build": {
       "command": "echo 'build'",
       "dependencies": [
-        "../common:build"
+        "../common:build",
+        "../feature1:build"
       ]
     }
   }
