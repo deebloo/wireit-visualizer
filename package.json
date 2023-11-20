@@ -15,7 +15,10 @@
       "service": true,
       "dependencies": [
         "build",
-        "./mock/common:build"
+        "./mock/core:build",
+        "./mock/common:build",
+        "./mock/feature1:build",
+        "./mock/feature2:build"
       ]
     },
     "build": {

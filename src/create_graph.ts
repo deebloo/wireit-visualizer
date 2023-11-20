@@ -14,6 +14,10 @@ export class Graph {
   }
 
   toString() {
-    return this.#entries.map((line) => "  " + line.join(" ") + ";").join("\n");
+    const dedupe = new Set(
+      this.#entries.map((line) => "  " + line.join(" ") + ";")
+    );
+
+    return Array.from(dedupe).join("\n");
   }
 }

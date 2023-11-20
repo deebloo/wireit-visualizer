@@ -5,6 +5,7 @@ import { Graph } from "./create_graph.js";
 import { find_deps } from "./find_deps.js";
 
 var app = express();
+const PORT = 3001;
 
 nunjucks.configure("views", {
   autoescape: true,
@@ -19,6 +20,6 @@ app.get("/", function (_req, res) {
   });
 });
 
-app.listen(3000, () => {
-  console.log(`Example app listening on port 3000`);
+app.listen(PORT, () => {
+  console.log(`Example app listening on port ${PORT}`);
 });
