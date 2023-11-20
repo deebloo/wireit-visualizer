@@ -1,7 +1,7 @@
 import { readFileSync } from "fs";
 import { join } from "path";
 
-import { Graph } from "./graph.js";
+import { MermaidGraph } from "./graph.js";
 
 export interface WireitTasks {
   [key: string]: Task;
@@ -24,7 +24,7 @@ export type Dependency =
       cascades: boolean;
     };
 
-export function find_deps(path: string, graph: Graph) {
+export function find_deps(path: string, graph: MermaidGraph) {
   const pkg: WireitPackageJson = JSON.parse(readFileSync(path).toString());
 
   for (let name in pkg.wireit) {

@@ -2,11 +2,13 @@ export type Node = string;
 export type Edge = "-->";
 export type Entry = [Node, Edge, Node];
 
-export class Graph {
+export class MermaidGraph {
   #entries: Entry[];
+  #type: string;
 
-  constructor(entries: Entry[]) {
+  constructor(type: string, entries: Entry[]) {
     this.#entries = entries;
+    this.#type = type;
   }
 
   addEntry(entry: Entry) {
@@ -18,8 +20,6 @@ export class Graph {
       this.#entries.map((line) => "  " + line.join(" ") + ";")
     );
 
-    console.log(Array.from(dedupe).join("\n"));
-
-    return Array.from(dedupe).join("\n");
+    return [this.#type, ...Array.from(dedupe)].join("\n");
   }
 }

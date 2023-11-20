@@ -1,7 +1,7 @@
 import express from "express";
 import nunjucks from "nunjucks";
 
-import { Graph } from "./graph.js";
+import { MermaidGraph } from "./graph.js";
 import { find_deps } from "./find_deps.js";
 
 var app = express();
@@ -13,7 +13,7 @@ nunjucks.configure("views", {
 });
 
 app.get("/", function (_req, res) {
-  const graph = find_deps("package.json", new Graph([]));
+  const graph = find_deps("package.json", new MermaidGraph("flowchart TD", []));
 
   res.render("index.html", {
     graph: graph.toString(),
