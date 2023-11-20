@@ -1,7 +1,7 @@
 import express from "express";
 import nunjucks from "nunjucks";
 
-import { Graph } from "./create_graph.js";
+import { Graph } from "./graph.js";
 import { find_deps } from "./find_deps.js";
 
 var app = express();

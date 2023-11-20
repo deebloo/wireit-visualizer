@@ -1,7 +1,7 @@
 import { readFileSync } from "fs";
 import { join } from "path";
 
-import { Graph } from "./create_graph.js";
+import { Graph } from "./graph.js";
 
 export interface WireitTasks {
   [key: string]: Task;
