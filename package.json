@@ -4,7 +4,9 @@
   "description": "",
   "type": "module",
   "main": "target/main.js",
-  "bin": "target/main.js",
+  "bin": {
+    "wireit-visualizer": "target/main.js"
+  },
   "author": "",
   "license": "ISC",
   "scripts": {
