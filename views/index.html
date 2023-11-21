@@ -21,7 +21,15 @@
     <script type="module">
       import mermaid from "mermaid";
 
-      mermaid.initialize({ startOnLoad: true, securityLevel: "loose" });
+      mermaid.initialize({
+        startOnLoad: true,
+        flowchart: { useMaxWidth: true, htmlLabels: true },
+        securityLevel: "loose",
+      });
+
+      document.addEventListener("click", (e) => {
+        console.log(e.target);
+      });
     </script>
   </body>
 </html>
