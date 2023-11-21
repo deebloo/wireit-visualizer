@@ -1,5 +1,5 @@
 {
-  "name": "core",
+  "name": "@app/core",
   "wireit": {
     "build": {
       "command": "echo 'build'",

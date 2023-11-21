@@ -34,12 +34,10 @@ export async function find_deps(
     const dep_json = JSON.parse(dep.config.declaringFile.contents);
 
     graph.addEntry([
-      `${task_json.name}:${config.value.name}`,
+      formatNode(task_json.name, config.value.name),
       "-->",
-      `${dep_json.name}:${dep.config.name}`,
+      formatNode(dep_json.name, dep.config.name),
     ]);
-
-    console.log(config);
 
     find_deps(
       { name: dep.config.name, packageDir: dep.config.packageDir },
@@ -49,4 +47,8 @@ export async function find_deps(
   }
 
   return graph;
+}
+
+function formatNode(name: string, task: string): string {
+  return `${name.replaceAll("@", "")}:${task}[${name}:${task}]`;
 }
