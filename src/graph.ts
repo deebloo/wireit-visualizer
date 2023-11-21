@@ -20,6 +20,8 @@ export class MermaidGraph {
       this.#entries.map((line) => "  " + line.join(" ") + ";")
     );
 
+    console.log([this.#type, ...Array.from(dedupe)].join("\n"));
+
     return [this.#type, ...Array.from(dedupe)].join("\n");
   }
 }
