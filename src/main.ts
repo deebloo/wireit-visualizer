@@ -1,17 +1,13 @@
 import express from "express";
 import nunjucks from "nunjucks";
 import { readFileSync } from "fs";
-import { join } from "path";
 import { Analyzer } from "wireit/lib/analyzer.js";
-import * as url from "url";
 
 import { MermaidGraph } from "./graph.js";
 
-const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
-
 var app = express();
 
-app.use(express.static(join(__dirname, "../node_modules")));
+app.use(express.static("node_modules"));
 
 const PORT = 4300;
 
