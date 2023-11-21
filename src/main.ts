@@ -1,39 +1,58 @@
 import express from "express";
 import nunjucks from "nunjucks";
 import { readFileSync } from "fs";
+import { join } from "path";
 import { Analyzer } from "wireit/lib/analyzer.js";
+import * as url from "url";
 
 import { MermaidGraph } from "./graph.js";
-import { find_deps } from "./find_deps.js";
+
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
 var app = express();
+
+app.use(express.static(join(__dirname, "../node_modules")));
+
 const PORT = 4300;
 
 nunjucks.configure("views", {
   autoescape: true,
-  express: app,
 });
 
-const analyzer = new Analyzer("npm");
-
-app.get("/", async function (_req, res) {
-  const mermaid = new MermaidGraph("flowchart TD", []);
+app.get("/", async function (req, res) {
+  const analyzer = new Analyzer("npm");
+  const mermaid = new MermaidGraph("flowchart TD;", []);
   const projectJson = JSON.parse(readFileSync("./package.json").toString());
 
-  for (let task of Object.keys(projectJson.wireit)) {
-    await find_deps(
+  console.log(req.query);
+
+  if (req.query.task) {
+    await mermaid.analyze(
       {
-        name: task,
+        name: req.query.task as string,
         packageDir: "./",
       },
-      analyzer,
-      mermaid
+      analyzer
+    );
+  } else {
+    await Promise.all(
+      Object.keys(projectJson.wireit).map((task) =>
+        mermaid.analyze(
+          {
+            name: task,
+            packageDir: "./",
+          },
+          analyzer
+        )
+      )
     );
   }
 
-  res.render("index.html", {
-    graph: mermaid.toString(),
-  });
+  res.send(
+    nunjucks.render("index.html", {
+      graph: mermaid.toString(),
+    })
+  );
 });
 
 app.listen(PORT, () => {
