@@ -1,11 +1,7 @@
 # Wireit Visualizer
 
 ```bash
-npm i -g wireit-visualizer
-```
-
-```bash
-wireit-visualizer
+npx wireit-visualizer
 ```
 
 This repo is a POC for the following issue filed on the wireit repo. https://github.com/google/wireit/issues/977
