@@ -16,8 +16,6 @@ var app = express();
 
 const PORT = await detectPort(4200);
 
-detectPort(4300);
-
 nunjucks.configure(join(__dirname, "../views"), {
   autoescape: true,
 });
