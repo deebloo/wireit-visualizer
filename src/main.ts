@@ -6,6 +6,7 @@ import { readFileSync } from "fs";
 import { Analyzer } from "wireit/lib/analyzer.js";
 import * as url from "url";
 import { join } from "path";
+import detectPort from "detect-port";
 
 import { MermaidGraph } from "./graph.js";
 
@@ -13,7 +14,9 @@ const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
 var app = express();
 
-const PORT = 4300;
+const PORT = await detectPort(4200);
+
+detectPort(4300);
 
 nunjucks.configure(join(__dirname, "../views"), {
   autoescape: true,
@@ -58,7 +61,7 @@ app.get("/", async function (req, res) {
 });
 
 app.listen(PORT, () => {
-  console.log(`Example app listening on port ${PORT}`);
+  console.log(`Visualizing build on port ${PORT}`);
 });
 
 process.on("SIGINT", () => {
