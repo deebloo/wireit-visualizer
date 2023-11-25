@@ -22,13 +22,17 @@ nunjucks.configure(join(__dirname, "../views"), {
 app.get("/", async function (req, res) {
   const analyzer = new Analyzer("npm");
   const mermaid = new MermaidGraph("flowchart LR;", []);
-  const projectJson = JSON.parse(readFileSync("./package.json").toString());
+  const packageDir = join("./", (req.query.path as string) || "");
+
+  const projectJson = JSON.parse(
+    readFileSync(join(packageDir, "./package.json")).toString()
+  );
 
   if (req.query.task) {
     await mermaid.analyze(
       {
         name: req.query.task as string,
-        packageDir: "./",
+        packageDir,
       },
       analyzer
     );
@@ -38,7 +42,7 @@ app.get("/", async function (req, res) {
         mermaid.analyze(
           {
             name: task,
-            packageDir: "./",
+            packageDir,
           },
           analyzer
         )
