@@ -13,8 +13,6 @@ const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
 var app = express();
 
-app.use(express.static(join(__dirname, "../node_modules")));
-
 const PORT = 4300;
 
 nunjucks.configure(join(__dirname, "../views"), {
@@ -25,8 +23,6 @@ app.get("/", async function (req, res) {
   const analyzer = new Analyzer("npm");
   const mermaid = new MermaidGraph("flowchart LR;", []);
   const projectJson = JSON.parse(readFileSync("./package.json").toString());
-
-  console.log(req.query);
 
   if (req.query.task) {
     await mermaid.analyze(

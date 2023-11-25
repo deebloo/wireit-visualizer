@@ -1,3 +1,5 @@
+import * as path from "path";
+
 export type Node = string;
 export type Edge = "-->";
 export type Entry = [Node, Edge, Node];
@@ -14,15 +16,17 @@ export class MermaidGraph {
   async analyze(task: { name: string; packageDir: string }, analyzer: any) {
     const { config } = await analyzer.analyze(task);
 
-    const task_json = JSON.parse(config.value.declaringFile.contents);
-
     for (let dep of config.value.dependencies) {
-      const dep_json = JSON.parse(dep.config.declaringFile.contents);
-
       this.addEntry([
-        formatNode(task_json.name, config.value.name),
+        formatNode({
+          name: task.name,
+          packageDir: path.resolve(task.packageDir),
+        }),
         "-->",
-        formatNode(dep_json.name, dep.config.name),
+        formatNode({
+          name: dep.config.name,
+          packageDir: path.resolve(dep.config.packageDir),
+        }),
       ]);
 
       await this.analyze(
@@ -49,6 +53,14 @@ export class MermaidGraph {
   }
 }
 
-function formatNode(name: string, task: string): string {
-  return `${name.replaceAll("@", "")}:${task}[${name}:${task}]`;
+function formatNode({
+  name,
+  packageDir,
+}: {
+  name: string;
+  packageDir: string;
+}): string {
+  const p = path.relative("./", packageDir);
+
+  return `${packageDir}:${name}[${p}:${name}]`;
 }
