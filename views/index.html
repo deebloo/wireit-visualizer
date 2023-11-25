@@ -34,7 +34,11 @@
       });
 
       document.addEventListener("click", (e) => {
-        console.log(e.target);
+        console.log(e.target.classList);
+
+        if (!e.target.classList.contains("nodeLabel")) {
+          return;
+        }
 
         const [path, task] = e.target.innerHTML.split(":");
 
