@@ -18,6 +18,10 @@
       .nodeLabel {
         cursor: pointer;
       }
+
+      .task-selected {
+        filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));
+      }
     </style>
 
     <pre class="mermaid">
@@ -33,18 +37,47 @@
         securityLevel: "loose",
       });
 
-      document.addEventListener("click", (e) => {
-        console.log(e.target.classList);
+      let tasks = [];
+
+      document.addEventListener("keyup", () => {
+        if (tasks.length) {
+          selectTasks(tasks);
+        }
+      });
+
+      document.addEventListener("mousedown", (e) => {
+        e.preventDefault();
 
         if (!e.target.classList.contains("nodeLabel")) {
           return;
         }
 
+        e.target
+          .closest(".label")
+          .previousSibling.classList.add("task-selected");
+
+        tasks.push(e.target.innerHTML);
+
+        if (!e.shiftKey) {
+          selectTasks(tasks);
+        }
+      });
+
+      function selectTasks(tasks) {
         const params = new URLSearchParams();
-        params.set("task", e.target.innerHTML);
+
+        for (let task of tasks) {
+          params.append("task", task);
+        }
+
+        tasks = [];
+
+        document.querySelectorAll(".task-selected").forEach((node) => {
+          node.classList.remove("task-selected");
+        });
 
         window.location.search = params.toString();
-      });
+      }
     </script>
   </body>
 </html>
