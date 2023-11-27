@@ -62,5 +62,5 @@ function formatNode({
 }): string {
   const p = path.relative("./", packageDir);
 
-  return `${packageDir}:${name}[${p}:${name}]`;
+  return `${p}:${name}`;
 }
