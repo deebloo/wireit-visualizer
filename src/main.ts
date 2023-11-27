@@ -24,16 +24,6 @@ app.get("/", async function (req, res) {
   const analyzer = new Analyzer("npm");
   const mermaid = new MermaidGraph("flowchart LR;", []);
 
-  const packagePath = req.query.path;
-  const packageDir = join(
-    "./",
-    typeof packagePath === "string" ? packagePath : ""
-  );
-
-  const projectJson = JSON.parse(
-    readFileSync(join(packageDir, "./package.json")).toString()
-  );
-
   const taskQuery = req.query.task;
 
   let tasks: string[] = [];
@@ -47,19 +37,26 @@ app.get("/", async function (req, res) {
       }
     }
   } else if (!taskQuery) {
-    tasks = Object.keys(projectJson.wireit);
+    // if not tasks are defined, find them in the root package.json
+    const projectJson = JSON.parse(
+      readFileSync(join("./package.json")).toString()
+    );
+
+    tasks = Object.keys(projectJson.wireit).map((task) => `./:${task}`);
   }
 
   await Promise.all(
-    tasks.map((task) =>
-      mermaid.analyze(
+    tasks.map((taskPath) => {
+      const [packageDir, task] = taskPath.split(":");
+
+      return mermaid.analyze(
         {
           name: task,
           packageDir,
         },
         analyzer
-      )
-    )
+      );
+    })
   );
 
   res.send(

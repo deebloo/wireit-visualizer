@@ -40,11 +40,8 @@
           return;
         }
 
-        const [path, task] = e.target.innerHTML.split(":");
-
         const params = new URLSearchParams();
-        params.set("path", path);
-        params.set("task", task);
+        params.set("task", e.target.innerHTML);
 
         window.location.search = params.toString();
       });
