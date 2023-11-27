@@ -23,33 +23,44 @@ nunjucks.configure(join(__dirname, "../views"), {
 app.get("/", async function (req, res) {
   const analyzer = new Analyzer("npm");
   const mermaid = new MermaidGraph("flowchart LR;", []);
-  const packageDir = join("./", (req.query.path as string) || "");
+
+  const packagePath = req.query.path;
+  const packageDir = join(
+    "./",
+    typeof packagePath === "string" ? packagePath : ""
+  );
 
   const projectJson = JSON.parse(
     readFileSync(join(packageDir, "./package.json")).toString()
   );
 
-  if (req.query.task) {
-    await mermaid.analyze(
-      {
-        name: req.query.task as string,
-        packageDir,
-      },
-      analyzer
-    );
-  } else {
-    await Promise.all(
-      Object.keys(projectJson.wireit).map((task) =>
-        mermaid.analyze(
-          {
-            name: task,
-            packageDir,
-          },
-          analyzer
-        )
-      )
-    );
+  const taskQuery = req.query.task;
+
+  let tasks: string[] = [];
+
+  if (typeof taskQuery === "string") {
+    tasks = [taskQuery];
+  } else if (Array.isArray(taskQuery)) {
+    for (let task of taskQuery) {
+      if (typeof task === "string") {
+        tasks.push(task);
+      }
+    }
+  } else if (!taskQuery) {
+    tasks = Object.keys(projectJson.wireit);
   }
+
+  await Promise.all(
+    tasks.map((task) =>
+      mermaid.analyze(
+        {
+          name: task,
+          packageDir,
+        },
+        analyzer
+      )
+    )
+  );
 
   res.send(
     nunjucks.render("index.html", {
