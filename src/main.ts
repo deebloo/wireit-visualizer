@@ -47,11 +47,11 @@ app.get("/", async function (req, res) {
 
   await Promise.all(
     tasks.map((taskPath) => {
-      const [packageDir, task] = taskPath.split(":");
+      const [packageDir, ...task] = taskPath.split(":");
 
       return mermaid.analyze(
         {
-          name: task,
+          name: task.join(":"),
           packageDir,
         },
         analyzer
