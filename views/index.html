@@ -41,7 +41,7 @@
 
       document.addEventListener("keyup", () => {
         if (tasks.length) {
-          selectTasks(tasks);
+          selectTasks();
         }
       });
 
@@ -59,22 +59,22 @@
         tasks.push(e.target.innerHTML);
 
         if (!e.shiftKey) {
-          selectTasks(tasks);
+          selectTasks();
         }
       });
 
-      function selectTasks(tasks) {
+      function selectTasks() {
         const params = new URLSearchParams();
 
-        for (let task of tasks) {
+        for (let task of new Set(tasks)) {
           params.append("task", task);
         }
-
-        tasks = [];
 
         document.querySelectorAll(".task-selected").forEach((node) => {
           node.classList.remove("task-selected");
         });
+
+        tasks = [];
 
         window.location.search = params.toString();
       }
