@@ -4,6 +4,23 @@ export type Node = string;
 export type Edge = "-->";
 export type Entry = [Node, Edge, Node];
 
+export interface Task {
+  name: string;
+  packageDir: string;
+}
+
+export interface AnalyzerResult {
+  config: {
+    value: {
+      dependencies: Array<{ config: Task }>;
+    };
+  };
+}
+
+export interface Analyzer {
+  analyze(task: Task): Promise<AnalyzerResult>;
+}
+
 export class MermaidGraph {
   #entries: Entry[];
   #type: string;
@@ -13,7 +30,10 @@ export class MermaidGraph {
     this.#type = type;
   }
 
-  async analyze(task: { name: string; packageDir: string }, analyzer: any) {
+  async analyze(
+    task: { name: string; packageDir: string },
+    analyzer: Analyzer
+  ) {
     const { config } = await analyzer.analyze(task);
 
     for (let dep of config.value.dependencies) {
@@ -42,10 +62,12 @@ export class MermaidGraph {
     this.#entries.push(entry);
   }
 
+  connect(node1: string, node2: string) {
+    this.addEntry([node1, "-->", node2]);
+  }
+
   toString() {
     const dedupe = new Set(this.#entries.map((line) => "  " + line.join(" ")));
-
-    console.log([this.#type, ...Array.from(dedupe)].join("\n"));
 
     return [this.#type, ...Array.from(dedupe)].join("\n");
   }

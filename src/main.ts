@@ -59,6 +59,8 @@ app.get("/", async function (req, res) {
     })
   );
 
+  console.log(mermaid.toString());
+
   res.send(
     nunjucks.render("index.html", {
       graph: mermaid.toString(),
