@@ -8,7 +8,7 @@ export class MermaidGraph {
   #entries: Entry[];
   #type: string;
 
-  constructor(type: string, entries: Entry[] = ) {
+  constructor(type: string, entries: Entry[] = []) {
     this.#entries = entries;
     this.#type = type;
   }
