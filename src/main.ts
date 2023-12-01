@@ -22,7 +22,7 @@ nunjucks.configure(join(__dirname, "../views"), {
 
 app.get("/", async function (req, res) {
   const analyzer = new Analyzer("npm");
-  const mermaid = new MermaidGraph("flowchart LR;", []);
+  const mermaid = new MermaidGraph("flowchart LR");
 
   const taskQuery = req.query.task;
 
