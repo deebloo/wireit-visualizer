@@ -21,9 +21,6 @@ nunjucks.configure(join(__dirname, "../views"), {
 });
 
 app.get("/data", async (req, res) => {
-  const analyzer = new Analyzer("npm");
-  const graph = new Graph();
-
   const taskQuery = req.query.task;
 
   let tasks: string[] = [];
@@ -45,6 +42,27 @@ app.get("/data", async (req, res) => {
     tasks = Object.keys(projectJson.wireit).map((task) => `./:${task}`);
   }
 
+  const graph = await analyzeTasks(tasks);
+
+  res.send(graph.graph);
+});
+
+app.get("/", async (_req, res) => {
+  res.send(nunjucks.render("index.html"));
+});
+
+app.listen(PORT, () => {
+  console.log(`Visualizing build on port ${PORT}`);
+});
+
+process.on("SIGINT", () => {
+  process.exit(0);
+});
+
+async function analyzeTasks(tasks: string[]) {
+  const analyzer = new Analyzer("npm");
+  const graph = new Graph();
+
   await Promise.all(
     tasks.map((taskPath) => {
       const [packageDir, ...task] = taskPath.split(":");
@@ -59,17 +77,5 @@ app.get("/data", async (req, res) => {
     })
   );
 
-  res.send(graph.graph);
-});
-
-app.get("/", async function (req, res) {
-  res.send(nunjucks.render("index.html"));
-});
-
-app.listen(PORT, () => {
-  console.log(`Visualizing build on port ${PORT}`);
-});
-
-process.on("SIGINT", () => {
-  process.exit(0);
-});
+  return graph;
+}
