@@ -19,23 +19,43 @@
     <script type="module">
       import { instance } from "https://cdn.jsdelivr.net/npm/@viz-js/viz@3.2.3/+esm";
 
-      Promise.all([instance(), fetch("/data").then((res) => res.json())]).then(
-        ([viz, data]) => {
-          const svg = viz.renderSVGElement({
-            nodes: data.nodes.map((node) => {
-              return { name: node.id };
-            }),
-            edges: data.edges.map((edge) => {
-              return {
-                head: edge.to,
-                tail: edge.from,
-              };
-            }),
-          });
+      const params = new URLSearchParams(window.location.search);
 
-          document.getElementById("mynetwork").appendChild(svg);
-        }
-      );
+      Promise.all([
+        instance(),
+        fetch("/data?" + params).then((res) => res.json()),
+      ]).then(([viz, data]) => {
+        const svg = viz.renderSVGElement({
+          graphAttributes: {
+            rankdir: "LR",
+            ordering: "in",
+          },
+          nodeAttributes: {
+            shape: "rectangle",
+          },
+          edgeAttributes: {
+            arrowsize: 0.5,
+            samehead: true,
+            sametail: true,
+          },
+          nodes: data.nodes.map((node) => {
+            return {
+              name: node.id,
+              attributes: {
+                URL: `?task=${node.id}`,
+              },
+            };
+          }),
+          edges: data.edges.map((edge) => {
+            return {
+              head: edge.to,
+              tail: edge.from,
+            };
+          }),
+        });
+
+        document.getElementById("mynetwork").appendChild(svg);
+      });
     </script>
   </body>
 </html>

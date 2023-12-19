@@ -45,6 +45,8 @@ app.get("/data", async (req, res) => {
     tasks = Object.keys(projectJson.wireit).map((task) => `./:${task}`);
   }
 
+  console.log(tasks);
+
   await Promise.all(
     tasks.map((taskPath) => {
       const [packageDir, ...task] = taskPath.split(":");
