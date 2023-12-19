@@ -1,5 +1,5 @@
 import * as path from "path";
-import { AnalyzerResult, Task } from "./analyzer.js";
+import { Analyzer } from "./analyzer.js";
 
 export interface Node {
   id: string;
@@ -9,10 +9,6 @@ export interface Edge {
   id: string;
   from: string;
   to: string;
-}
-
-export interface Analyzer {
-  analyze(task: Task): Promise<AnalyzerResult>;
 }
 
 export class Graph {
