@@ -2,7 +2,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Wireit</title>
   </head>
 
   <body>
@@ -17,13 +17,13 @@
     <div id="mynetwork"></div>
 
     <script type="module">
-      const params = new URLSearchParams(window.location.search);
-
       const lib = import(
         "https://cdn.jsdelivr.net/npm/@viz-js/viz@3.2.3/+esm"
       ).then((m) => m.instance());
 
-      const data = fetch("/data?" + params).then((res) => res.json());
+      const data = fetch("/data" + window.location.search).then((res) =>
+        res.json()
+      );
 
       Promise.all([lib, data]).then(([viz, data]) => {
         const svg = viz.renderSVGElement({
