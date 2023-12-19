@@ -1,1 +1,1 @@
-export { MermaidGraph } from "./graph.js";
+export { Graph } from "./graph.js";

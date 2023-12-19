@@ -8,7 +8,7 @@ import * as url from "url";
 import { join } from "path";
 import detectPort from "detect-port";
 
-import { MermaidGraph } from "./graph.js";
+import { Graph } from "./graph.js";
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
@@ -20,9 +20,9 @@ nunjucks.configure(join(__dirname, "../views"), {
   autoescape: true,
 });
 
-app.get("/", async function (req, res) {
+app.get("/data", async (req, res) => {
   const analyzer = new Analyzer("npm");
-  const mermaid = new MermaidGraph("flowchart LR");
+  const cytoscape = new Graph();
 
   const taskQuery = req.query.task;
 
@@ -49,7 +49,7 @@ app.get("/", async function (req, res) {
     tasks.map((taskPath) => {
       const [packageDir, ...task] = taskPath.split(":");
 
-      return mermaid.analyze(
+      return cytoscape.analyze(
         {
           name: task.join(":"),
           packageDir,
@@ -59,13 +59,11 @@ app.get("/", async function (req, res) {
     })
   );
 
-  console.log(mermaid.toString());
+  res.send(cytoscape.graph);
+});
 
-  res.send(
-    nunjucks.render("index.html", {
-      graph: mermaid.toString(),
-    })
-  );
+app.get("/", async function (req, res) {
+  res.send(nunjucks.render("index.html"));
 });
 
 app.listen(PORT, () => {

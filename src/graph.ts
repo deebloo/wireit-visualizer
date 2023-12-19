@@ -1,33 +1,34 @@
 import * as path from "path";
+import { AnalyzerResult, Task } from "./analyzer.js";
 
-export type Node = string;
-export type Edge = "-->";
-export type Entry = [Node, Edge, Node];
-
-export interface Task {
-  name: string;
-  packageDir: string;
+export interface Node {
+  id: string;
 }
 
-export interface AnalyzerResult {
-  config: {
-    value: {
-      dependencies: Array<{ config: Task }>;
-    };
-  };
+export interface Edge {
+  id: string;
+  from: string;
+  to: string;
 }
 
 export interface Analyzer {
   analyze(task: Task): Promise<AnalyzerResult>;
 }
 
-export class MermaidGraph {
-  #entries: Entry[];
-  #type: string;
+export class Graph {
+  #graph: {
+    nodes: Node[];
+    edges: Edge[];
+  } = {
+    nodes: [],
+    edges: [],
+  };
 
-  constructor(type: string, entries: Entry[] = []) {
-    this.#entries = entries;
-    this.#type = type;
+  // keep track of all nodes so we don't duplicate
+  #nodes = new Set<string>();
+
+  get graph() {
+    return this.#graph;
   }
 
   async analyze(
@@ -36,18 +37,28 @@ export class MermaidGraph {
   ) {
     const { config } = await analyzer.analyze(task);
 
+    const nodeId = createNodeId({
+      name: task.name,
+      packageDir: path.resolve(task.packageDir),
+    });
+
+    this.addNode({
+      id: nodeId,
+    });
+
     for (let dep of config.value.dependencies) {
-      this.addEntry([
-        formatNode({
-          name: task.name,
-          packageDir: path.resolve(task.packageDir),
-        }),
-        "-->",
-        formatNode({
-          name: dep.config.name,
-          packageDir: path.resolve(dep.config.packageDir),
-        }),
-      ]);
+      const depNodeId = createNodeId({
+        name: dep.config.name,
+        packageDir: path.resolve(dep.config.packageDir),
+      });
+
+      const edgeId = `${nodeId}-->${depNodeId}`;
+
+      this.addEdge({
+        id: edgeId,
+        from: nodeId,
+        to: depNodeId,
+      });
 
       await this.analyze(
         { name: dep.config.name, packageDir: dep.config.packageDir },
@@ -58,22 +69,22 @@ export class MermaidGraph {
     return this;
   }
 
-  addEntry(entry: Entry) {
-    this.#entries.push(entry);
+  addNode(node: Node) {
+    if (!this.#nodes.has(node.id)) {
+      this.#nodes.add(node.id);
+      this.#graph.nodes.push(node);
+    }
   }
 
-  connect(node1: string, node2: string) {
-    this.addEntry([node1, "-->", node2]);
-  }
-
-  toString() {
-    const dedupe = new Set(this.#entries.map((line) => "  " + line.join(" ")));
-
-    return [this.#type, ...Array.from(dedupe)].join("\n");
+  addEdge(edge: Edge) {
+    if (!this.#nodes.has(edge.id)) {
+      this.#nodes.add(edge.id);
+      this.#graph.edges.push(edge);
+    }
   }
 }
 
-function formatNode({
+function createNodeId({
   name,
   packageDir,
 }: {

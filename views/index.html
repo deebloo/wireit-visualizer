@@ -3,81 +3,39 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-
-    <script type="importmap">
-      {
-        "imports": {
-          "mermaid": "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs"
-        }
-      }
-    </script>
   </head>
 
   <body>
     <style>
-      .nodeLabel {
-        cursor: pointer;
-      }
-
-      .task-selected {
-        filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));
+      #mynetwork {
+        width: 100%;
+        height: 100%;
+        display: block;
       }
     </style>
 
-    <pre class="mermaid">
-      {{graph}}
-    </pre>
+    <div id="mynetwork"></div>
 
     <script type="module">
-      import mermaid from "mermaid";
+      import { instance } from "https://cdn.jsdelivr.net/npm/@viz-js/viz@3.2.3/+esm";
 
-      mermaid.initialize({
-        startOnLoad: true,
-        flowchart: { useMaxWidth: true, htmlLabels: true, curve: "cardinal" },
-        securityLevel: "loose",
-      });
+      Promise.all([instance(), fetch("/data").then((res) => res.json())]).then(
+        ([viz, data]) => {
+          const svg = viz.renderSVGElement({
+            nodes: data.nodes.map((node) => {
+              return { name: node.id };
+            }),
+            edges: data.edges.map((edge) => {
+              return {
+                head: edge.to,
+                tail: edge.from,
+              };
+            }),
+          });
 
-      let tasks = [];
-
-      document.addEventListener("keyup", () => {
-        if (tasks.length) {
-          selectTasks();
+          document.getElementById("mynetwork").appendChild(svg);
         }
-      });
-
-      document.addEventListener("mousedown", (e) => {
-        e.preventDefault();
-
-        if (!e.target.classList.contains("nodeLabel")) {
-          return;
-        }
-
-        e.target
-          .closest(".label")
-          .previousSibling.classList.add("task-selected");
-
-        tasks.push(e.target.innerHTML);
-
-        if (!e.shiftKey) {
-          selectTasks();
-        }
-      });
-
-      function selectTasks() {
-        const params = new URLSearchParams();
-
-        for (let task of new Set(tasks)) {
-          params.append("task", task);
-        }
-
-        document.querySelectorAll(".task-selected").forEach((node) => {
-          node.classList.remove("task-selected");
-        });
-
-        tasks = [];
-
-        window.location.search = params.toString();
-      }
+      );
     </script>
   </body>
 </html>
