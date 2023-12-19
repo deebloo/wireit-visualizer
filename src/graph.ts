@@ -48,13 +48,7 @@ export class Graph {
         packageDir: path.resolve(dep.config.packageDir),
       });
 
-      const edgeId = `${nodeId}-->${depNodeId}`;
-
-      this.addEdge({
-        id: edgeId,
-        from: nodeId,
-        to: depNodeId,
-      });
+      this.connect(nodeId, depNodeId);
 
       await this.analyze(
         { name: dep.config.name, packageDir: dep.config.packageDir },
@@ -77,6 +71,14 @@ export class Graph {
       this.#nodes.add(edge.id);
       this.#graph.edges.push(edge);
     }
+  }
+
+  connect(from: string, to: string) {
+    this.addEdge({
+      id: `${from}-->${to}`,
+      from,
+      to,
+    });
   }
 }
 
