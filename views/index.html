@@ -17,32 +17,31 @@
     <div id="mynetwork"></div>
 
     <script type="module">
-      import { instance } from "https://cdn.jsdelivr.net/npm/@viz-js/viz@3.2.3/+esm";
-
       const params = new URLSearchParams(window.location.search);
 
-      Promise.all([
-        instance(),
-        fetch("/data?" + params).then((res) => res.json()),
-      ]).then(([viz, data]) => {
+      const lib = import(
+        "https://cdn.jsdelivr.net/npm/@viz-js/viz@3.2.3/+esm"
+      ).then((m) => m.instance());
+
+      const data = fetch("/data?" + params).then((res) => res.json());
+
+      Promise.all([lib, data]).then(([viz, data]) => {
         const svg = viz.renderSVGElement({
           graphAttributes: {
             rankdir: "LR",
             ordering: "in",
           },
           nodeAttributes: {
-            shape: "rectangle",
+            shape: "box",
           },
           edgeAttributes: {
             arrowsize: 0.5,
-            samehead: true,
-            sametail: true,
           },
           nodes: data.nodes.map((node) => {
             return {
               name: node.id,
               attributes: {
-                URL: `?task=${node.id}`,
+                href: `?task=${node.id}`,
               },
             };
           }),

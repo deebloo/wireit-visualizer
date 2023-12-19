@@ -22,14 +22,14 @@ nunjucks.configure(join(__dirname, "../views"), {
 
 app.get("/data", async (req, res) => {
   const analyzer = new Analyzer("npm");
-  const cytoscape = new Graph();
+  const graph = new Graph();
 
   const taskQuery = req.query.task;
 
   let tasks: string[] = [];
 
   if (typeof taskQuery === "string") {
-    tasks = [taskQuery];
+    tasks.push(taskQuery);
   } else if (Array.isArray(taskQuery)) {
     for (let task of taskQuery) {
       if (typeof task === "string") {
@@ -45,13 +45,11 @@ app.get("/data", async (req, res) => {
     tasks = Object.keys(projectJson.wireit).map((task) => `./:${task}`);
   }
 
-  console.log(tasks);
-
   await Promise.all(
     tasks.map((taskPath) => {
       const [packageDir, ...task] = taskPath.split(":");
 
-      return cytoscape.analyze(
+      return graph.analyze(
         {
           name: task.join(":"),
           packageDir,
@@ -61,7 +59,7 @@ app.get("/data", async (req, res) => {
     })
   );
 
-  res.send(cytoscape.graph);
+  res.send(graph.graph);
 });
 
 app.get("/", async function (req, res) {
