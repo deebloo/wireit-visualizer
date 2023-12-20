@@ -1,4 +1,5 @@
 import test from "ava";
+
 import { Graph } from "./graph.js";
 import { Analyzer, AnalyzerResult, Task } from "./analyzer.js";
 

@@ -1,4 +1,5 @@
 import test from "ava";
+
 import { WireitAnalyzer, WireitPackage } from "./analyzer.js";
 
 test("should locate package json file", async (t) => {

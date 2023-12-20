@@ -1,10 +1,10 @@
 #! /usr/bin/env node
 
+import { readFileSync } from "node:fs";
+import * as url from "node:url";
+import { join } from "node:path";
 import express from "express";
 import nunjucks from "nunjucks";
-import { readFileSync } from "fs";
-import * as url from "url";
-import { join } from "path";
 import detectPort from "detect-port";
 
 import { Graph } from "./graph.js";
