@@ -1,11 +1,12 @@
 import test from "ava";
 
 import { Graph } from "./graph.js";
-import { Analyzer, AnalyzerResult, Task, WireitAnalyzer } from "./analyzer.js";
+import { AnalyzerResult } from "./analyzer.js";
+import { WireitTask } from "./wireit.js";
 
 test("should create graph", (t) => {
   const graph = new Graph({
-    async analyze(_: Task) {
+    async analyze(_: WireitTask) {
       return {
         dependencies: [],
       };
@@ -41,7 +42,7 @@ test("should create graph from analyzer", async (t) => {
   };
 
   const graph = new Graph({
-    async analyze({ name, packageDir }: Task) {
+    async analyze({ name, packageDir }: WireitTask) {
       return buildConfig[`${packageDir}:${name}`];
     },
   });

@@ -1,30 +1,13 @@
 import { resolve } from "node:path";
 
-export interface Task {
-  name: string;
-  packageDir: string;
-}
-
-export type Dependency = string | { script: string; cascade?: boolean };
-
-export interface TaskConfig {
-  command?: string;
-  service?: true;
-  files?: string[];
-  outputs?: string[];
-  dependencies?: Dependency[];
-}
-
-export interface WireitPackage {
-  wireit: Record<string, TaskConfig>;
-}
+import { WireitPackage, WireitTask } from "./wireit.js";
 
 export interface AnalyzerResult {
-  dependencies: Task[];
+  dependencies: WireitTask[];
 }
 
 export interface Analyzer {
-  analyze(task: Task): Promise<AnalyzerResult>;
+  analyze(task: WireitTask): Promise<AnalyzerResult>;
 }
 
 export interface WireitReader {
@@ -38,7 +21,7 @@ export class WireitAnalyzer implements Analyzer {
     this.#reader = reader;
   }
 
-  async analyze(task: Task): Promise<AnalyzerResult> {
+  async analyze(task: WireitTask): Promise<AnalyzerResult> {
     const file: WireitPackage = await this.#reader.read(task.packageDir);
 
     const taskConfig = file.wireit[task.name];
