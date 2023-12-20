@@ -8,10 +8,13 @@ test("should locate package json file", async (t) => {
         wireit: {
           build: {
             command: "build",
-            dependencies: ["tsc"],
+            dependencies: ["tsc", { script: "css" }],
           },
           tsc: {
             command: "tsc",
+          },
+          css: {
+            command: "",
           },
         },
       };
@@ -29,6 +32,12 @@ test("should locate package json file", async (t) => {
           {
             config: {
               name: "tsc",
+              packageDir: "./",
+            },
+          },
+          {
+            config: {
+              name: "css",
               packageDir: "./",
             },
           },

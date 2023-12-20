@@ -5,13 +5,18 @@ export interface Task {
   packageDir: string;
 }
 
-export interface WireitPackage {
-  wireit: Record<string, TaskConfig>;
-}
+export type Dependency = string | { script: string; cascade?: boolean };
 
 export interface TaskConfig {
   command?: string;
-  dependencies?: string[];
+  service?: true;
+  files?: string[];
+  outputs?: string[];
+  dependencies?: Dependency[];
+}
+
+export interface WireitPackage {
+  wireit: Record<string, TaskConfig>;
 }
 
 export interface AnalyzerResult {
@@ -37,18 +42,19 @@ export class WireitAnalyzer implements Analyzer {
       config: {
         value: {
           dependencies: taskDeps.map((dep) => {
-            const parsed = dep.split(":");
+            const depScript =
+              typeof dep === "string" ? dep.split(":") : dep.script.split(":");
 
-            if (parsed.length === 1) {
+            if (depScript.length === 1) {
               return {
                 config: {
                   packageDir: task.packageDir,
-                  name: dep,
+                  name: depScript.join(":"),
                 },
               };
             }
 
-            const [packageDir, ...name] = parsed;
+            const [packageDir, ...name] = depScript;
 
             return {
               config: {
