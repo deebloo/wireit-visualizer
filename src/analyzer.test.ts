@@ -14,7 +14,7 @@ test("should locate package json file", async (t) => {
             command: "tsc",
           },
           css: {
-            command: "",
+            command: "css",
           },
         },
       };
