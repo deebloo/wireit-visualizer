@@ -1,10 +1,10 @@
 import test from "ava";
 
-import { WireitAnalyzer, WireitPackage } from "./analyzer.js";
+import { WireitAnalyzer } from "./analyzer.js";
 
 test("should locate package json file", async (t) => {
-  class Analyzer extends WireitAnalyzer {
-    async readPackge(_: string): Promise<WireitPackage> {
+  const analyzer = new WireitAnalyzer({
+    async read() {
       return {
         wireit: {
           build: {
@@ -19,31 +19,21 @@ test("should locate package json file", async (t) => {
           },
         },
       };
-    }
-  }
-
-  const analyzer = new Analyzer();
+    },
+  });
 
   const res = await analyzer.analyze({ name: "build", packageDir: "./" });
 
   t.deepEqual(res, {
-    config: {
-      value: {
-        dependencies: [
-          {
-            config: {
-              name: "tsc",
-              packageDir: "./",
-            },
-          },
-          {
-            config: {
-              name: "css",
-              packageDir: "./",
-            },
-          },
-        ],
+    dependencies: [
+      {
+        name: "tsc",
+        packageDir: "./",
       },
-    },
+      {
+        name: "css",
+        packageDir: "./",
+      },
+    ],
   });
 });

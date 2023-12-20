@@ -23,16 +23,18 @@ export class Graph {
 
   // keep track of all nodes so we don't duplicate
   #nodes = new Set<string>();
+  #analyzer: Analyzer;
+
+  constructor(analyzer: Analyzer) {
+    this.#analyzer = analyzer;
+  }
 
   get graph() {
     return this.#graph;
   }
 
-  async analyze(
-    task: { name: string; packageDir: string },
-    analyzer: Analyzer
-  ) {
-    const { config } = await analyzer.analyze(task);
+  async analyze(task: { name: string; packageDir: string }) {
+    const { dependencies } = await this.#analyzer.analyze(task);
 
     const nodeId = createNodeId({
       name: task.name,
@@ -43,18 +45,15 @@ export class Graph {
       id: nodeId,
     });
 
-    for (let dep of config.value.dependencies) {
+    for (let dep of dependencies) {
       const depNodeId = createNodeId({
-        name: dep.config.name,
-        packageDir: path.resolve(dep.config.packageDir),
+        name: dep.name,
+        packageDir: path.resolve(dep.packageDir),
       });
 
       this.connect(nodeId, depNodeId);
 
-      await this.analyze(
-        { name: dep.config.name, packageDir: dep.config.packageDir },
-        analyzer
-      );
+      await this.analyze({ name: dep.name, packageDir: dep.packageDir });
     }
 
     return this;

@@ -20,56 +20,56 @@ export interface WireitPackage {
 }
 
 export interface AnalyzerResult {
-  config: {
-    value: {
-      dependencies: Array<{ config: Task }>;
-    };
-  };
+  dependencies: Task[];
 }
 
 export interface Analyzer {
   analyze(task: Task): Promise<AnalyzerResult>;
 }
 
+export interface WireitReader {
+  read(path: string): Promise<WireitPackage>;
+}
+
 export class WireitAnalyzer implements Analyzer {
+  #reader: WireitReader;
+
+  constructor(reader: WireitReader) {
+    this.#reader = reader;
+  }
+
   async analyze(task: Task): Promise<AnalyzerResult> {
-    const file: WireitPackage = await this.readPackge(task.packageDir);
+    const file: WireitPackage = await this.#reader.read(task.packageDir);
 
     const taskConfig = file.wireit[task.name];
     const taskDeps = taskConfig.dependencies || [];
 
     return {
-      config: {
-        value: {
-          dependencies: taskDeps.map((dep) => {
-            const script = typeof dep === "string" ? dep : dep.script;
+      dependencies: taskDeps.map((dep) => {
+        const script = typeof dep === "string" ? dep : dep.script;
 
-            // if the script is local use the current packageDir
-            if (!script.startsWith(".")) {
-              return {
-                config: {
-                  packageDir: task.packageDir,
-                  name: script,
-                },
-              };
-            }
+        // if the script is local use the current packageDir
+        if (!script.startsWith(".")) {
+          return {
+            packageDir: task.packageDir,
+            name: script,
+          };
+        }
 
-            const [packageDir, ...name] = script.split(":");
+        const [packageDir, ...name] = script.split(":");
 
-            return {
-              config: {
-                packageDir: resolve(task.packageDir, packageDir),
-                name: name.join(":"),
-              },
-            };
-          }),
-        },
-      },
+        return {
+          packageDir: resolve(task.packageDir, packageDir),
+          name: name.join(":"),
+        };
+      }),
     };
   }
+}
 
-  async readPackge(packageDir: string): Promise<WireitPackage> {
-    return import(resolve(packageDir, "package.json"), {
+export class EsmReader implements WireitReader {
+  async read(path: string): Promise<WireitPackage> {
+    return import(resolve(path, "package.json"), {
       assert: { type: "json" },
     }).then((m) => m.default);
   }

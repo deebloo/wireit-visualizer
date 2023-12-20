@@ -1,10 +1,16 @@
 import test from "ava";
 
 import { Graph } from "./graph.js";
-import { Analyzer, AnalyzerResult, Task } from "./analyzer.js";
+import { Analyzer, AnalyzerResult, Task, WireitAnalyzer } from "./analyzer.js";
 
 test("should create graph", (t) => {
-  const graph = new Graph();
+  const graph = new Graph({
+    async analyze(_: Task) {
+      return {
+        dependencies: [],
+      };
+    },
+  });
 
   graph.addNode({ id: "a" });
   graph.addNode({ id: "b" });
@@ -25,32 +31,22 @@ test("should create graph", (t) => {
 });
 
 test("should create graph from analyzer", async (t) => {
-  const graph = new Graph();
-
   const buildConfig: Record<string, AnalyzerResult> = {
     "./:a": {
-      config: {
-        value: {
-          dependencies: [{ config: { name: "b", packageDir: "./" } }],
-        },
-      },
+      dependencies: [{ name: "b", packageDir: "./" }],
     },
     "./:b": {
-      config: {
-        value: {
-          dependencies: [],
-        },
-      },
+      dependencies: [],
     },
   };
 
-  class TestAnalyzer implements Analyzer {
+  const graph = new Graph({
     async analyze({ name, packageDir }: Task) {
       return buildConfig[`${packageDir}:${name}`];
-    }
-  }
+    },
+  });
 
-  await graph.analyze({ name: "a", packageDir: "./" }, new TestAnalyzer());
+  await graph.analyze({ name: "a", packageDir: "./" });
 
   t.deepEqual(graph.graph, {
     nodes: [{ id: ":a" }, { id: ":b" }],

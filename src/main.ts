@@ -8,7 +8,7 @@ import nunjucks from "nunjucks";
 import detectPort from "detect-port";
 
 import { Graph } from "./graph.js";
-import { WireitAnalyzer } from "./analyzer.js";
+import { EsmReader, WireitAnalyzer } from "./analyzer.js";
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
@@ -60,20 +60,17 @@ process.on("SIGINT", () => {
 });
 
 async function analyzeTasks(tasks: string[]) {
-  const analyzer = new WireitAnalyzer();
-  const graph = new Graph();
+  const analyzer = new WireitAnalyzer(new EsmReader());
+  const graph = new Graph(analyzer);
 
   await Promise.all(
     tasks.map((taskPath) => {
       const [packageDir, ...task] = taskPath.split(":");
 
-      return graph.analyze(
-        {
-          name: task.join(":"),
-          packageDir,
-        },
-        analyzer
-      );
+      return graph.analyze({
+        name: task.join(":"),
+        packageDir,
+      });
     })
   );
 
