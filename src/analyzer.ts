@@ -42,19 +42,19 @@ export class WireitAnalyzer implements Analyzer {
       config: {
         value: {
           dependencies: taskDeps.map((dep) => {
-            const depScript =
-              typeof dep === "string" ? dep.split(":") : dep.script.split(":");
+            const script = typeof dep === "string" ? dep : dep.script;
 
-            if (depScript.length === 1) {
+            // if the script is local use the current packageDir
+            if (!script.startsWith(".")) {
               return {
                 config: {
                   packageDir: task.packageDir,
-                  name: depScript.join(":"),
+                  name: script,
                 },
               };
             }
 
-            const [packageDir, ...name] = depScript;
+            const [packageDir, ...name] = script.split(":");
 
             return {
               config: {
