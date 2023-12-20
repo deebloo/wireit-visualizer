@@ -9,6 +9,7 @@ import { join } from "path";
 import detectPort from "detect-port";
 
 import { Graph } from "./graph.js";
+import { WireitAnalyzer } from "./analyzer.js";
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
@@ -60,7 +61,7 @@ process.on("SIGINT", () => {
 });
 
 async function analyzeTasks(tasks: string[]) {
-  const analyzer = new Analyzer("npm");
+  const analyzer = new WireitAnalyzer();
   const graph = new Graph();
 
   await Promise.all(
