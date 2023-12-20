@@ -3,7 +3,6 @@
 import express from "express";
 import nunjucks from "nunjucks";
 import { readFileSync } from "fs";
-import { Analyzer } from "wireit/lib/analyzer.js";
 import * as url from "url";
 import { join } from "path";
 import detectPort from "detect-port";
