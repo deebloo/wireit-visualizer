@@ -39,5 +39,7 @@ Promise.all([lib, data]).then(([viz, data]) => {
   const svg = viz.renderSVGElement(config);
   const str = viz.renderString(config);
 
+  console.log(str);
+
   document.getElementById("mynetwork")!.appendChild(svg);
 });
