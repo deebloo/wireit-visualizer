@@ -3,7 +3,11 @@
   "version": "1.1.1",
   "description": "",
   "type": "module",
-  "main": "target/main.js",
+  "exports": {
+    ".": {
+      "import": "./target/lib.js"
+    }
+  },
   "bin": {
     "wireit-visualizer": "target/main.js"
   },
@@ -11,7 +15,8 @@
   "license": "ISC",
   "files": [
     "target",
-    "views"
+    "views",
+    "vendor"
   ],
   "scripts": {
     "start": "wireit",
@@ -55,12 +60,13 @@
       ]
     },
     "graphviz": {
-      "command": "cp node_modules/@viz-js/viz/lib/viz-standalone.mjs target/ui/viz-standalone.mjs",
+      "command": "cp -R node_modules/@viz-js vendor",
+      "clean": "if-file-deleted",
       "files": [
-        "node_modules/@viz-js/viz/lib/viz-standalone.mjs"
+        "node_modules/@viz-js/**"
       ],
       "output": [
-        "target/ui/viz-standalone.mjs"
+        "vendor/@viz-js/**"
       ]
     }
   },

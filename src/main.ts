@@ -21,6 +21,7 @@ nunjucks.configure(resolve(__dirname, "../views"), {
 });
 
 app.use(express.static(resolve(__dirname, "../target/ui")));
+app.use(express.static(resolve(__dirname, "../vendor")));
 
 app.get("/data", async (req, res) => {
   const taskQuery = req.query.task;
