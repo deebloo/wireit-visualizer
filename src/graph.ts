@@ -1,6 +1,7 @@
 import * as path from "path";
 
 import { Analyzer } from "./analyzer.js";
+import { WireitTask } from "./wireit.js";
 
 export interface Node {
   id: string;
@@ -12,11 +13,13 @@ export interface Edge {
   to: string;
 }
 
+export interface GraphData {
+  nodes: Node[];
+  edges: Edge[];
+}
+
 export class Graph {
-  #graph: {
-    nodes: Node[];
-    edges: Edge[];
-  } = {
+  #graph: GraphData = {
     nodes: [],
     edges: [],
   };
@@ -33,10 +36,10 @@ export class Graph {
     return this.#graph;
   }
 
-  async analyze(task: { name: string; packageDir: string }) {
+  async analyze(task: WireitTask) {
     const { dependencies } = await this.#analyzer.analyze(task);
 
-    const nodeId = createNodeId({
+    const nodeId = this.createNodeId({
       name: task.name,
       packageDir: path.resolve(task.packageDir),
     });
@@ -46,7 +49,7 @@ export class Graph {
     });
 
     for (let dep of dependencies) {
-      const depNodeId = createNodeId({
+      const depNodeId = this.createNodeId({
         name: dep.name,
         packageDir: path.resolve(dep.packageDir),
       });
@@ -80,16 +83,16 @@ export class Graph {
       to,
     });
   }
-}
 
-function createNodeId({
-  name,
-  packageDir,
-}: {
-  name: string;
-  packageDir: string;
-}): string {
-  const p = path.relative("./", packageDir);
+  createNodeId({
+    name,
+    packageDir,
+  }: {
+    name: string;
+    packageDir: string;
+  }): string {
+    const p = path.relative("./", packageDir);
 
-  return `${p}:${name}`;
+    return `${p}:${name}`;
+  }
 }

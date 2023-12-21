@@ -2,7 +2,7 @@
 
 import { readFileSync } from "node:fs";
 import * as url from "node:url";
-import { join } from "node:path";
+import { resolve } from "node:path";
 import express from "express";
 import nunjucks from "nunjucks";
 import detectPort from "detect-port";
@@ -16,9 +16,11 @@ var app = express();
 
 const PORT = await detectPort(4200);
 
-nunjucks.configure(join(__dirname, "../views"), {
+nunjucks.configure(resolve(__dirname, "../views"), {
   autoescape: true,
 });
+
+app.use(express.static(resolve(__dirname, "../target/ui")));
 
 app.get("/data", async (req, res) => {
   const taskQuery = req.query.task;
@@ -36,7 +38,7 @@ app.get("/data", async (req, res) => {
   } else if (!taskQuery) {
     // if not tasks are defined, find them in the root package.json
     const projectJson = JSON.parse(
-      readFileSync(join("./package.json")).toString()
+      readFileSync(resolve("./package.json")).toString()
     );
 
     tasks = Object.keys(projectJson.wireit).map((task) => `./:${task}`);

@@ -3,6 +3,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Wireit</title>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "@viz-js/viz": "/viz-standalone.mjs"
+        }
+      }
+    </script>
   </head>
 
   <body>
@@ -25,49 +33,6 @@
 
     <div id="mynetwork"></div>
 
-    <script type="module">
-      const lib = import(
-        "https://cdn.jsdelivr.net/npm/@viz-js/viz@3.2.3/+esm"
-      ).then((m) => m.instance());
-
-      const data = fetch("/data" + window.location.search).then((res) =>
-        res.json()
-      );
-
-      Promise.all([lib, data]).then(([viz, data]) => {
-        const config = {
-          graphAttributes: {
-            rankdir: "LR",
-            ordering: "in",
-          },
-          nodeAttributes: {
-            shape: "box",
-          },
-          edgeAttributes: {
-            arrowsize: 0.5,
-          },
-          nodes: data.nodes.map((node) => {
-            return {
-              name: node.id,
-              attributes: {
-                href: `?task=${node.id}`,
-              },
-            };
-          }),
-          edges: data.edges.map((edge) => {
-            return {
-              head: edge.to,
-              tail: edge.from,
-            };
-          }),
-        };
-
-        const svg = viz.renderSVGElement(config);
-
-        console.log(viz.renderString(config));
-
-        document.getElementById("mynetwork").appendChild(svg);
-      });
-    </script>
+    <script type="module" src="main.js"></script>
   </body>
 </html>
