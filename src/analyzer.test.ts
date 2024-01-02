@@ -6,6 +6,7 @@ test("should locate package json file", async (t) => {
   const analyzer = new WireitAnalyzer({
     async read() {
       return {
+        scripts: {},
         wireit: {
           build: {
             command: "build",

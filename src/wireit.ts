@@ -14,5 +14,6 @@ export interface WireitTaskConfig {
 }
 
 export interface WireitPackage {
+  scripts: Record<string, string>;
   wireit: Record<string, WireitTaskConfig>;
 }

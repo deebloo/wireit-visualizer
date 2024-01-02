@@ -1,6 +1,6 @@
 import { resolve } from "node:path";
 
-import { WireitPackage, WireitTask } from "./wireit.js";
+import { WireitDependency, WireitPackage, WireitTask } from "./wireit.js";
 
 export interface AnalyzerResult {
   dependencies: WireitTask[];
@@ -25,7 +25,12 @@ export class WireitAnalyzer implements Analyzer {
     const file: WireitPackage = await this.#reader.read(task.packageDir);
 
     const taskConfig = file.wireit[task.name];
-    const taskDeps = taskConfig.dependencies || [];
+
+    let taskDeps: WireitDependency[] = [];
+
+    if (taskConfig && taskConfig.dependencies) {
+      taskDeps = taskConfig.dependencies;
+    }
 
     return {
       dependencies: taskDeps.map((dep) => {
