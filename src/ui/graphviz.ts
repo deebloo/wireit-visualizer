@@ -1,4 +1,5 @@
 import { Graph } from "@viz-js/viz";
+
 import { GraphData } from "../graph.js";
 
 const lib = import("@viz-js/viz").then((m) => m.instance());

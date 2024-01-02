@@ -50,8 +50,12 @@ app.get("/data", async (req, res) => {
   res.send(graph.graph);
 });
 
-app.get("/", async (_req, res) => {
-  res.send(nunjucks.render("index.html"));
+app.get("/graphviz", async (_req, res) => {
+  res.send(nunjucks.render("graphviz.html"));
+});
+
+app.get("/mermaid", async (_req, res) => {
+  res.send(nunjucks.render("mermaid.html"));
 });
 
 app.listen(PORT, () => {
