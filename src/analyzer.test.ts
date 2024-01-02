@@ -9,7 +9,6 @@ test("should locate package json file", async (t) => {
         scripts: {},
         wireit: {
           build: {
-            command: "build",
             dependencies: ["tsc", { script: "css" }],
           },
           tsc: {
@@ -36,5 +35,32 @@ test("should locate package json file", async (t) => {
         packageDir: "./",
       },
     ],
+  });
+});
+
+test("should use standard script if no wireit config", async (t) => {
+  const analyzer = new WireitAnalyzer({
+    async read() {
+      return {
+        scripts: {
+          tsc: "tsc",
+        },
+        wireit: {
+          build: {
+            command: "build",
+            dependencies: ["tsc", "css"],
+          },
+          css: {
+            command: "css",
+          },
+        },
+      };
+    },
+  });
+
+  const res = await analyzer.analyze({ name: "tsc", packageDir: "./" });
+
+  t.deepEqual(res, {
+    dependencies: [],
   });
 });
