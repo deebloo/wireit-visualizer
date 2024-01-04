@@ -50,7 +50,7 @@ app.get("/data", async (req, res) => {
   res.send(graph.graph);
 });
 
-app.get("/graphviz", async (_req, res) => {
+app.get("/", async (_req, res) => {
   res.send(nunjucks.render("graphviz.html"));
 });
 

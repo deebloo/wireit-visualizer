@@ -1,0 +1,66 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wireit</title>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "@viz-js/viz": "/@viz-js/viz/lib/viz-standalone.mjs",
+          "mermaid": "/mermaid/dist/mermaid.esm.min.mjs",
+          "@shoelace-style/shoelace/": "/@shoelace-style/shoelace/cdn/"
+        }
+      }
+    </script>
+
+    <link
+      rel="stylesheet"
+      href="/@shoelace-style/shoelace/dist/themes/light.css"
+    />
+
+    <script type="module" data-shoelace="/@shoelace-style/shoelace/cdn/">
+      import "@shoelace-style/shoelace/shoelace-autoloader.js";
+    </script>
+  </head>
+
+  <body>
+    <style>
+      :not(:defined) {
+        visibility: hidden;
+      }
+
+      sl-dropdown {
+        font-size: 1rem;
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+      }
+
+      sl-dropdown sl-icon {
+        font-size: 1.5rem;
+      }
+    </style>
+
+    <sl-dropdown>
+      <sl-button slot="trigger">
+        <sl-icon slot="prefix" name="gear"></sl-icon>
+      </sl-button>
+
+      <sl-menu>
+        <sl-menu-item value="/">Graphviz</sl-menu-item>
+        <sl-menu-item value="/mermaid">Mermaid</sl-menu-item>
+      </sl-menu>
+    </sl-dropdown>
+
+    <main>{% block main %} This is the default content {% endblock %}</main>
+
+    <script type="module">
+      const dropdown = document.querySelector("sl-dropdown");
+
+      dropdown.addEventListener("sl-select", (e) => {
+        window.location.href = e.detail.item.value + window.location.search;
+      });
+    </script>
+  </body>
+</html>

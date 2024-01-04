@@ -1,40 +1,25 @@
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Wireit</title>
+{% extends "base.html" %} {% block main %}
 
-    <script type="importmap">
-      {
-        "imports": {
-          "@viz-js/viz": "/@viz-js/viz/lib/viz-standalone.mjs"
-        }
-      }
-    </script>
-  </head>
+<style>
+  .node text {
+    font-family: sans-serif;
+    font-size: 0.75rem;
+  }
 
-  <body>
-    <style>
-      * {
-        font-family: sans-serif;
-        font-size: 0.85rem;
-      }
+  #mynetwork {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
 
-      #mynetwork {
-        width: 100%;
-        height: 100%;
-        display: block;
-      }
+  .node polygon {
+    fill: #ececff;
+    stroke: #9370db;
+    stroke-width: 1px;
+  }
+</style>
 
-      .node polygon {
-        fill: #ececff;
-        stroke: #9370db;
-        stroke-width: 1px;
-      }
-    </style>
+<div id="mynetwork"></div>
 
-    <div id="mynetwork"></div>
-
-    <script type="module" src="/graphviz.js"></script>
-  </body>
-</html>
+<script type="module" src="/graphviz.js"></script>
+{% endblock %}

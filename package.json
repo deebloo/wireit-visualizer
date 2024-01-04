@@ -37,6 +37,21 @@
       ]
     },
     "build": {
+      "dependencies": [
+        "graphviz",
+        "mermaid",
+        "shoelace",
+        "tsc"
+      ]
+    },
+    "test": {
+      "command": "ava target/**/*.test.js",
+      "output": [],
+      "dependencies": [
+        "build"
+      ]
+    },
+    "tsc": {
       "command": "tsc --build --pretty",
       "clean": "if-file-deleted",
       "files": [
@@ -48,16 +63,7 @@
         "tsconfig.tsbuildinfo"
       ],
       "dependencies": [
-        "graphviz",
-        "mermaid",
         "./mock/core:build"
-      ]
-    },
-    "test": {
-      "command": "ava target/**/*.test.js",
-      "output": [],
-      "dependencies": [
-        "build"
       ]
     },
     "graphviz": {
@@ -79,9 +85,20 @@
       "output": [
         "vendor/mermaid/**"
       ]
+    },
+    "shoelace": {
+      "command": "cp -R node_modules/@shoelace-style vendor",
+      "clean": "if-file-deleted",
+      "files": [
+        "node_modules/@shoelace-style/**"
+      ],
+      "output": [
+        "vendor/@shoelace-style/**"
+      ]
     }
   },
   "dependencies": {
+    "@shoelace-style/shoelace": "^2.12.0",
     "detect-port": "^1.5.1",
     "express": "^4.18.2",
     "mermaid": "^10.6.1",
