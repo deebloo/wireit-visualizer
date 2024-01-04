@@ -40,6 +40,16 @@
       sl-dropdown sl-icon {
         font-size: 1.5rem;
       }
+
+      #mynetwork {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+
+      #mynetworkconfig {
+        display: none;
+      }
     </style>
 
     <sl-dropdown>
@@ -48,18 +58,46 @@
       </sl-button>
 
       <sl-menu>
-        <sl-menu-item value="/">Graphviz</sl-menu-item>
-        <sl-menu-item value="/mermaid">Mermaid</sl-menu-item>
+        <sl-menu-item value="graphviz">Graphviz</sl-menu-item>
+        <sl-menu-item value="mermaid">Mermaid</sl-menu-item>
+
+        <sl-divider></sl-divider>
+
+        <sl-menu-item value="copy">Copy</sl-menu-item>
       </sl-menu>
     </sl-dropdown>
 
-    <main>{% block main %} This is the default content {% endblock %}</main>
+    <main>
+      <div id="mynetwork"></div>
+      <div id="mynetworkconfig"></div>
+
+      {% block main %} This is the default content {% endblock %}
+    </main>
 
     <script type="module">
       const dropdown = document.querySelector("sl-dropdown");
 
+      const commands = {
+        graphviz(e) {
+          window.location.href = "/" + window.location.search;
+        },
+        mermaid(e) {
+          window.location.href =
+            "/" + e.detail.item.value + window.location.search;
+        },
+        copy() {
+          const configEl = document.getElementById("mynetworkconfig");
+
+          navigator.clipboard.writeText(configEl.textContent);
+        },
+      };
+
       dropdown.addEventListener("sl-select", (e) => {
-        window.location.href = e.detail.item.value + window.location.search;
+        const command = commands[e.detail.item.value];
+
+        if (command) {
+          command(e);
+        }
       });
     </script>
   </body>

@@ -17,7 +17,7 @@ const res = await Promise.all([lib, data]).then(([mermaid, data]) => {
         .join("\n")}
   `;
 
-  console.log(graph);
+  document.getElementById("mynetworkconfig")!.innerHTML = graph;
 
   return mermaid.render("mermaid", graph);
 });
