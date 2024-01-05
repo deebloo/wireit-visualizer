@@ -6,14 +6,14 @@ import { resolve } from "node:path";
 import express from "express";
 import nunjucks from "nunjucks";
 import detectPort from "detect-port";
-
 import { ParsedQs } from "qs";
 
 import { Graph } from "./lib/graph.js";
 import { FsReader, WireitAnalyzer } from "./lib/analyzer.js";
 import { graphMapper } from "./lib/grapth-mapper.js";
-import { GraphvizParser } from "./graphviz.js";
 import { GraphParser } from "./lib/graph-parser.js";
+
+import { GraphvizParser } from "./graphviz.js";
 import { MermaidParser } from "./mermaid.js";
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
