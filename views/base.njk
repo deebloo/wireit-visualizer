@@ -31,7 +31,6 @@
       }
 
       sl-dropdown {
-        font-size: 1rem;
         position: absolute;
         top: 1rem;
         right: 1rem;
@@ -69,9 +68,10 @@
 
     <main>
       <div id="mynetwork"></div>
-      <div id="mynetworkconfig"></div>
 
-      {% block main %} This is the default content {% endblock %}
+      <div id="mynetworkconfig" aria-hidden="true"></div>
+
+      {% block main %} {% endblock %}
     </main>
 
     <script type="module">
@@ -79,16 +79,19 @@
 
       const commands = {
         graphviz(e) {
-          window.location.href = "/" + window.location.search;
+          window.location.href =
+            "/graph/" + e.detail.item.value + window.location.search;
         },
         mermaid(e) {
           window.location.href =
-            "/" + e.detail.item.value + window.location.search;
+            "/graph/" + e.detail.item.value + window.location.search;
         },
         copy() {
           const configEl = document.getElementById("mynetworkconfig");
 
           navigator.clipboard.writeText(configEl.textContent);
+
+          alert("Copied!");
         },
       };
 

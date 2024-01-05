@@ -1,8 +1,8 @@
-export { Graph } from "./graph.js";
-export { WireitAnalyzer, Analyzer } from "./analyzer.js";
+export { Graph } from "./lib/graph.js";
+export { WireitAnalyzer, Analyzer } from "./lib/analyzer.js";
 export {
   WireitDependency,
   WireitPackage,
   WireitTask,
   WireitTaskConfig,
-} from "./wireit.js";
+} from "./lib/wireit.js";

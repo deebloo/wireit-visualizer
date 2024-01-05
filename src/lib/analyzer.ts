@@ -1,4 +1,5 @@
 import { resolve } from "node:path";
+import { readFile } from "node:fs/promises";
 
 import { WireitDependency, WireitPackage, WireitTask } from "./wireit.js";
 
@@ -52,6 +53,16 @@ export class WireitAnalyzer implements Analyzer {
         };
       }),
     };
+  }
+}
+
+export class FsReader implements WireitReader {
+  async read(path: string): Promise<WireitPackage> {
+    return readFile(resolve(path, "package.json")).then<WireitPackage>(
+      (res) => {
+        return JSON.parse(res.toString());
+      }
+    );
   }
 }
 
