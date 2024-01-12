@@ -18,10 +18,6 @@
       rel="stylesheet"
       href="/@shoelace-style/shoelace/dist/themes/light.css"
     />
-
-    <script type="module" data-shoelace="/@shoelace-style/shoelace/cdn/">
-      import "@shoelace-style/shoelace/shoelace-autoloader.js";
-    </script>
   </head>
 
   <body>
@@ -74,34 +70,10 @@
       {% block main %} {% endblock %}
     </main>
 
-    <script type="module">
-      const dropdown = document.querySelector("sl-dropdown");
-
-      const commands = {
-        graphviz(e) {
-          window.location.href =
-            "/graph/" + e.detail.item.value + window.location.search;
-        },
-        mermaid(e) {
-          window.location.href =
-            "/graph/" + e.detail.item.value + window.location.search;
-        },
-        copy() {
-          const configEl = document.getElementById("mynetworkconfig");
-
-          navigator.clipboard.writeText(configEl.textContent);
-
-          alert("Copied!");
-        },
-      };
-
-      dropdown.addEventListener("sl-select", (e) => {
-        const command = commands[e.detail.item.value];
-
-        if (command) {
-          command(e);
-        }
-      });
+    <script type="module" data-shoelace="/@shoelace-style/shoelace/cdn/">
+      import "@shoelace-style/shoelace/shoelace-autoloader.js";
     </script>
+
+    <script type="module" src="/app.js"></script>
   </body>
 </html>
