@@ -6,6 +6,12 @@ Wireit Visualizer gives you the ability to generate a graph visualization of you
 npx wireit-visualizer@latest
 ```
 
+## Options
+
+| name   | short | default |
+| ------ | ----- | ------- |
+| --port | -p    | 4200    |
+
 This repo generats the following graph
 
 ```mermaid

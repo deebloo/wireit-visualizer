@@ -2,6 +2,7 @@
 
 import { readFileSync } from "node:fs";
 import * as url from "node:url";
+import { parseArgs } from "node:util";
 import { resolve } from "node:path";
 import express from "express";
 import nunjucks from "nunjucks";
@@ -16,7 +17,16 @@ const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
 var app = express();
 
-const PORT = await detectPort(4200);
+const args = parseArgs({
+  options: {
+    port: {
+      type: "string",
+      short: "p",
+    },
+  },
+});
+
+const PORT = args.values.port || (await detectPort(4200));
 
 nunjucks.configure(resolve(__dirname, "../views"), {
   autoescape: true,
@@ -69,7 +79,7 @@ app.get("/graph/:graphType", async (req, res, next) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Visualizing build on port ${PORT}`);
+  console.log(`Wireit Visualizer running on http://localhost:${PORT}`);
 });
 
 process.on("SIGINT", () => {
