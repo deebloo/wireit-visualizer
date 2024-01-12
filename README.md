@@ -3,7 +3,7 @@
 Wireit Visualizer gives you the ability to generate a graph visualization of your build configuration.
 
 ```bash
-npx wireit-visualizer@latest
+npx wireit-visualizer@latest --open
 ```
 
 ## Options
