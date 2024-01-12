@@ -12,6 +12,7 @@ import { ParsedQs } from "qs";
 import { Graph, GraphParser, FsReader, WireitAnalyzer } from "./lib.js";
 import { GraphvizParser } from "./graphviz.js";
 import { MermaidParser } from "./mermaid.js";
+import open from "open";
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
@@ -22,6 +23,10 @@ const args = parseArgs({
     port: {
       type: "string",
       short: "p",
+    },
+    open: {
+      type: "boolean",
+      short: "o",
     },
   },
 });
@@ -78,8 +83,14 @@ app.get("/graph/:graphType", async (req, res, next) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Wireit Visualizer running on http://localhost:${PORT}`);
+app.listen(PORT, async () => {
+  const url = `http://localhost:${PORT}`;
+
+  console.log(`Wireit Visualizer running on ${url}`);
+
+  if (args.values.open) {
+    await open(url);
+  }
 });
 
 process.on("SIGINT", () => {

@@ -8,9 +8,10 @@ npx wireit-visualizer@latest
 
 ## Options
 
-| name   | short | default |
-| ------ | ----- | ------- |
-| --port | -p    | 4200    |
+| name   | short | description       | default |
+| ------ | ----- | ----------------- | ------- |
+| --port | -p    | server port       | 4200    |
+| --open | -o    | auto open browser | false   |
 
 This repo generats the following graph
 
