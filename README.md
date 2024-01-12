@@ -13,6 +13,7 @@ npx wireit-visualizer@latest --open
 | --port | -p    | server port       | 4200    |
 | --open | -o    | auto open browser | false   |
 
+## Example Output
 This repo generats the following graph
 
 ```mermaid
