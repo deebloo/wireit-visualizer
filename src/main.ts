@@ -28,10 +28,15 @@ const args = parseArgs({
       type: "boolean",
       short: "o",
     },
+    visualizer: {
+      type: "string",
+      short: "v",
+    },
   },
 });
 
 const PORT = args.values.port || (await detectPort(4200));
+const INITIAL_VIZ = args.values.visualizer ?? "graphviz";
 
 nunjucks.configure(resolve(__dirname, "../views"), {
   autoescape: true,
@@ -39,13 +44,6 @@ nunjucks.configure(resolve(__dirname, "../views"), {
 
 app.use(express.static(resolve(__dirname, "../target/ui")));
 app.use(express.static(resolve(__dirname, "../vendor")));
-
-app.get("/api/graph", async (req, res) => {
-  const tasks = determineTasks(req.query.task);
-  const analysis = await analyzeTasks(tasks);
-
-  res.send(analysis.graph);
-});
 
 app.get("/api/graph/:graphType", async (req, res) => {
   const tasks = determineTasks(req.query.task);
@@ -70,8 +68,16 @@ app.get("/api/graph/:graphType", async (req, res) => {
   }
 });
 
-app.get("/", async (_req, res) => {
-  res.redirect("/graph/graphviz");
+app.get("/", (_req, res) => {
+  switch (INITIAL_VIZ.toLocaleLowerCase()) {
+    case "graphviz":
+      res.redirect("/graph/graphviz");
+      break;
+
+    case "mermaid":
+      res.redirect("/graph/mermaid");
+      break;
+  }
 });
 
 app.get("/graph/:graphType", async (req, res, next) => {

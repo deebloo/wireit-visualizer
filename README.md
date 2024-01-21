@@ -8,12 +8,14 @@ npx wireit-visualizer@latest --open
 
 ## Options
 
-| name   | short | description       | default |
-| ------ | ----- | ----------------- | ------- |
-| --port | -p    | server port       | 4200    |
-| --open | -o    | auto open browser | false   |
+| name         | short | description             | default    |
+| ------------ | ----- | ----------------------- | ---------- |
+| --port       | -p    | server port             | 4200       |
+| --open       | -o    | auto open browser       | false      |
+| --visualizer | -v    | "graphviz" \| "mermaid" | "graphviz" |
 
 ## Example Output
+
 This repo generats the following graph
 
 ```mermaid
