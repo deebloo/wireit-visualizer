@@ -37,7 +37,9 @@ export class Graph {
   }
 
   async analyze(task: WireitTask) {
-    const { dependencies } = await this.#analyzer.analyze(task);
+    const { dependencies, ...rest } = await this.#analyzer.analyze(task);
+
+    console.log(task.name, rest);
 
     const nodeId = this.createNodeId({
       name: task.name,

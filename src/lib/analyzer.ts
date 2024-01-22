@@ -1,9 +1,12 @@
 import { resolve } from "node:path";
 import { readFile } from "node:fs/promises";
+import { glob } from "glob";
 
 import { WireitDependency, WireitPackage, WireitTask } from "./wireit.js";
 
 export interface AnalyzerResult {
+  files: string[];
+  outputs: string[];
   dependencies: WireitTask[];
 }
 
@@ -28,12 +31,26 @@ export class WireitAnalyzer implements Analyzer {
     const taskConfig = file.wireit[task.name];
 
     let taskDeps: WireitDependency[] = [];
+    let taskFiles: string[] = [];
+    let taskOutputs: string[] = [];
 
-    if (taskConfig && taskConfig.dependencies) {
-      taskDeps = taskConfig.dependencies;
+    if (taskConfig) {
+      if (taskConfig.dependencies) {
+        taskDeps = taskConfig.dependencies;
+      }
+
+      if (taskConfig.files) {
+        taskFiles = await glob(taskConfig.files);
+      }
+
+      if (taskConfig.outputs) {
+        taskOutputs = await glob(taskConfig.outputs);
+      }
     }
 
     return {
+      files: taskFiles,
+      outputs: taskOutputs,
       dependencies: taskDeps.map((dep) => {
         const script = typeof dep === "string" ? dep : dep.script;
 

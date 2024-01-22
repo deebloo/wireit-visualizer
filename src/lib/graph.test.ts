@@ -8,6 +8,8 @@ test("should create graph", (t) => {
   const graph = new Graph({
     async analyze(_: WireitTask) {
       return {
+        files: [],
+        outputs: [],
         dependencies: [],
       };
     },
@@ -34,9 +36,13 @@ test("should create graph", (t) => {
 test("should create graph from analyzer", async (t) => {
   const buildConfig: Record<string, AnalyzerResult> = {
     "./:a": {
+      files: [],
+      outputs: [],
       dependencies: [{ name: "b", packageDir: "./" }],
     },
     "./:b": {
+      files: [],
+      outputs: [],
       dependencies: [],
     },
   };
