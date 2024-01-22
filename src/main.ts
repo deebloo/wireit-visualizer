@@ -64,7 +64,10 @@ app.get("/api/graph/:graphType", async (req, res) => {
   }
 
   if (parser) {
-    res.send(parser.parse(analysis.graph));
+    res.send({
+      source: analysis.graph,
+      parsed: parser.parse(analysis.graph),
+    });
   } else {
     res.status(404).send(`Graph type "${req.params.graphType}" not defined`);
   }

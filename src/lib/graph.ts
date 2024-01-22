@@ -5,6 +5,10 @@ import { WireitTask } from "./wireit.js";
 
 export interface Node {
   id: string;
+  wireit: {
+    files: string[];
+    outputs: string[];
+  };
 }
 
 export interface Edge {
@@ -37,9 +41,11 @@ export class Graph {
   }
 
   async analyze(task: WireitTask) {
-    const { dependencies, ...rest } = await this.#analyzer.analyze(task);
-
-    console.log(task.name, rest);
+    const {
+      dependencies,
+      files,
+      output: outputs,
+    } = await this.#analyzer.analyze(task);
 
     const nodeId = this.createNodeId({
       name: task.name,
@@ -48,6 +54,10 @@ export class Graph {
 
     this.addNode({
       id: nodeId,
+      wireit: {
+        files,
+        outputs,
+      },
     });
 
     for (let dep of dependencies) {

@@ -9,15 +9,15 @@ test("should create graph", (t) => {
     async analyze(_: WireitTask) {
       return {
         files: [],
-        outputs: [],
+        output: [],
         dependencies: [],
       };
     },
   });
 
-  graph.addNode({ id: "a" });
-  graph.addNode({ id: "b" });
-  graph.addNode({ id: "c" });
+  graph.addNode({ id: "a", wireit: { files: [], outputs: [] } });
+  graph.addNode({ id: "b", wireit: { files: [], outputs: [] } });
+  graph.addNode({ id: "c", wireit: { files: [], outputs: [] } });
 
   graph.connect("a", "b");
   graph.connect("b", "c");
@@ -37,12 +37,12 @@ test("should create graph from analyzer", async (t) => {
   const buildConfig: Record<string, AnalyzerResult> = {
     "./:a": {
       files: [],
-      outputs: [],
+      output: [],
       dependencies: [{ name: "b", packageDir: "./" }],
     },
     "./:b": {
       files: [],
-      outputs: [],
+      output: [],
       dependencies: [],
     },
   };

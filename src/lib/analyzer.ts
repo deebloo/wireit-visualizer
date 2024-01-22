@@ -6,7 +6,7 @@ import { WireitDependency, WireitPackage, WireitTask } from "./wireit.js";
 
 export interface AnalyzerResult {
   files: string[];
-  outputs: string[];
+  output: string[];
   dependencies: WireitTask[];
 }
 
@@ -43,14 +43,14 @@ export class WireitAnalyzer implements Analyzer {
         taskFiles = await glob(taskConfig.files);
       }
 
-      if (taskConfig.outputs) {
-        taskOutputs = await glob(taskConfig.outputs);
+      if (taskConfig.output) {
+        taskOutputs = await glob(taskConfig.output);
       }
     }
 
     return {
       files: taskFiles,
-      outputs: taskOutputs,
+      output: taskOutputs,
       dependencies: taskDeps.map((dep) => {
         const script = typeof dep === "string" ? dep : dep.script;
 
