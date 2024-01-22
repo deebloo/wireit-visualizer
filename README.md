@@ -35,3 +35,17 @@ graph LR
 ```
 
 This repo is a POC for the following issue filed on the wireit repo. https://github.com/google/wireit/issues/977
+
+## Development
+
+### Install
+
+```bash
+npm i
+```
+
+### Start local server (in watch mode)
+
+```bash
+npm start --watch
+```
