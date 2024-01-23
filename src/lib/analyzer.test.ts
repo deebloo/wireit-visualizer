@@ -35,6 +35,8 @@ test("should locate package json file", async (t) => {
         packageDir: "./",
       },
     ],
+    files: [],
+    output: [],
   });
 });
 
@@ -62,5 +64,7 @@ test("should use standard script if no wireit config", async (t) => {
 
   t.deepEqual(res, {
     dependencies: [],
+    files: [],
+    output: [],
   });
 });

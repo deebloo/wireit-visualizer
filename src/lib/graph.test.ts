@@ -24,7 +24,29 @@ test("should create graph", (t) => {
   graph.connect("c", "a");
 
   t.deepEqual(graph.graph, {
-    nodes: [{ id: "a" }, { id: "b" }, { id: "c" }],
+    nodes: [
+      {
+        id: "a",
+        wireit: {
+          files: [],
+          outputs: [],
+        },
+      },
+      {
+        id: "b",
+        wireit: {
+          files: [],
+          outputs: [],
+        },
+      },
+      {
+        id: "c",
+        wireit: {
+          files: [],
+          outputs: [],
+        },
+      },
+    ],
     edges: [
       { id: "a-->b", from: "a", to: "b" },
       { id: "b-->c", from: "b", to: "c" },
@@ -56,7 +78,22 @@ test("should create graph from analyzer", async (t) => {
   await graph.analyze({ name: "a", packageDir: "./" });
 
   t.deepEqual(graph.graph, {
-    nodes: [{ id: ":a" }, { id: ":b" }],
+    nodes: [
+      {
+        id: ":a",
+        wireit: {
+          files: [],
+          outputs: [],
+        },
+      },
+      {
+        id: ":b",
+        wireit: {
+          files: [],
+          outputs: [],
+        },
+      },
+    ],
     edges: [{ id: ":a-->:b", from: ":a", to: ":b" }],
   });
 });

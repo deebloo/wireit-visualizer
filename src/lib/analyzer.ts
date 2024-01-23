@@ -40,7 +40,9 @@ export class WireitAnalyzer implements Analyzer {
       }
 
       if (taskConfig.files) {
-        taskFiles = await glob(taskConfig.files);
+        const files = await glob(taskConfig.files);
+
+        taskFiles = files;
       }
 
       if (taskConfig.output) {
