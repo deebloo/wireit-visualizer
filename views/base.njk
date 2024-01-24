@@ -9,7 +9,9 @@
         "imports": {
           "@viz-js/viz": "/@viz-js/viz/lib/viz-standalone.mjs",
           "mermaid": "/mermaid/dist/mermaid.esm.min.mjs",
-          "@shoelace-style/shoelace/": "/@shoelace-style/shoelace/cdn/"
+          "@shoelace-style/shoelace/": "/@shoelace-style/shoelace/cdn/",
+          "lit-html": "/lit-html/lit-html.js",
+          "lit-html/": "/lit-html/"
         }
       }
     </script>
@@ -45,6 +47,7 @@
       #mynetworkconfig {
         display: none;
       }
+
     </style>
 
     <sl-dropdown>
@@ -69,6 +72,9 @@
 
       {% block main %} {% endblock %}
     </main>
+
+
+    <sl-drawer></sl-drawer>
 
     <script type="module" data-shoelace="/@shoelace-style/shoelace/cdn/">
       import "@shoelace-style/shoelace/shoelace-autoloader.js";

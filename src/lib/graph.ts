@@ -1,10 +1,14 @@
 import * as path from "path";
 
-import { Analyzer } from "./analyzer.js";
+import { AnalyzedFile, Analyzer } from "./analyzer.js";
 import { WireitTask } from "./wireit.js";
 
 export interface Node {
   id: string;
+  wireit: {
+    files: AnalyzedFile[];
+    output: AnalyzedFile[];
+  };
 }
 
 export interface Edge {
@@ -37,7 +41,7 @@ export class Graph {
   }
 
   async analyze(task: WireitTask) {
-    const { dependencies } = await this.#analyzer.analyze(task);
+    const { dependencies, files, output } = await this.#analyzer.analyze(task);
 
     const nodeId = this.createNodeId({
       name: task.name,
@@ -46,6 +50,10 @@ export class Graph {
 
     this.addNode({
       id: nodeId,
+      wireit: {
+        files,
+        output,
+      },
     });
 
     for (let dep of dependencies) {

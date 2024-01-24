@@ -1,9 +1,18 @@
 import { resolve } from "node:path";
 import { readFile } from "node:fs/promises";
+import { glob } from "glob";
 
 import { WireitDependency, WireitPackage, WireitTask } from "./wireit.js";
 
+export interface AnalyzedFile {
+  id: string;
+  name: string;
+  parent?: string;
+}
+
 export interface AnalyzerResult {
+  files: AnalyzedFile[];
+  output: AnalyzedFile[];
   dependencies: WireitTask[];
 }
 
@@ -28,12 +37,82 @@ export class WireitAnalyzer implements Analyzer {
     const taskConfig = file.wireit[task.name];
 
     let taskDeps: WireitDependency[] = [];
+    let taskFiles: AnalyzedFile[] = [];
+    let taskOutput: AnalyzedFile[] = [];
 
-    if (taskConfig && taskConfig.dependencies) {
-      taskDeps = taskConfig.dependencies;
+    if (taskConfig) {
+      if (taskConfig.dependencies) {
+        taskDeps = taskConfig.dependencies;
+      }
+
+      if (taskConfig.files) {
+        const files = await glob(taskConfig.files);
+        const ids = new Set<string>();
+        const res: AnalyzedFile[] = [];
+
+        for (let file of files) {
+          const parsed = file.split("/").reverse();
+
+          while (parsed.length) {
+            const id = btoa(parsed.join("-"));
+            const name = parsed.shift();
+
+            if (name && !ids.has(id)) {
+              const file: AnalyzedFile = {
+                id,
+                name,
+              };
+
+              if (parsed.length) {
+                file.parent = btoa(parsed.join("-"));
+              }
+
+              res.push(file);
+
+              ids.add(id);
+            }
+          }
+        }
+
+        taskFiles = res;
+      }
+
+      if (taskConfig.output) {
+        const files = await glob(taskConfig.output);
+        const ids = new Set<string>();
+        const res: AnalyzedFile[] = [];
+
+        for (let file of files) {
+          const parsed = file.split("/").reverse();
+
+          while (parsed.length) {
+            const id = btoa(parsed.join("-"));
+            const name = parsed.shift();
+
+            if (name && !ids.has(id)) {
+              const file: AnalyzedFile = {
+                id,
+                name,
+              };
+
+              if (parsed.length) {
+                file.parent = btoa(parsed.join("-"));
+              }
+
+              res.push(file);
+
+              ids.add(id);
+            }
+          }
+        }
+
+        taskOutput = res;
+      }
     }
 
     return {
+      files: taskFiles,
+      output: taskOutput,
       dependencies: taskDeps.map((dep) => {
         const script = typeof dep === "string" ? dep : dep.script;
 

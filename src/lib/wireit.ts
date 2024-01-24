@@ -9,7 +9,7 @@ export interface WireitTaskConfig {
   command?: string;
   service?: true;
   files?: string[];
-  outputs?: string[];
+  output?: string[];
   dependencies?: WireitDependency[];
 }
 
