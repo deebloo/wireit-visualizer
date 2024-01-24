@@ -31,11 +31,14 @@ export function createTreeItems(
   });
 
   return html`
-    ${files.map(
-      (file) =>
-        html`<sl-tree-item>
-          ${file.name} ${createTreeItems(source, file.id)}
-        </sl-tree-item>`
-    )}
+    ${files.map((file) => {
+      console.log(file.name.split("."));
+      return html`<sl-tree-item>
+        ${file.name.split(".").length > 1
+          ? null
+          : html`<sl-icon name="folder"></sl-icon>`}
+        ${file.name} ${createTreeItems(source, file.id)}
+      </sl-tree-item>`;
+    })}
   `;
 }
