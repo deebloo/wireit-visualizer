@@ -1,4 +1,4 @@
-import { TemplateResult, html, render } from "lit-html";
+import { html, render } from "lit-html";
 
 import { Node } from "../lib/graph.js";
 import { AnalyzedFile } from "../lib/analyzer.js";
@@ -34,7 +34,7 @@ function createTreeItems(source: AnalyzedFile[], current: string | undefined) {
       treeItem.append(icon);
     }
 
-    treeItem.innerText = file.name;
+    treeItem.append(document.createTextNode(file.name));
 
     treeItem.addEventListener("sl-lazy-load", () => {
       treeItem.append(...createTreeItems(source, file.id));
