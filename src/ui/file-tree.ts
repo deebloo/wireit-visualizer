@@ -30,9 +30,14 @@ export function createTreeItems(
     return file.parent === current;
   });
 
+  for (let file of files) {
+    const index = source.indexOf(file);
+
+    source.splice(index, 1);
+  }
+
   return html`
     ${files.map((file) => {
-      console.log(file.name.split("."));
       return html`<sl-tree-item>
         ${file.name.split(".").length > 1
           ? null
