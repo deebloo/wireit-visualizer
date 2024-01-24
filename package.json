@@ -41,6 +41,7 @@
         "graphviz",
         "mermaid",
         "shoelace",
+        "lit-html",
         "tsc"
       ]
     },
@@ -95,6 +96,16 @@
       "output": [
         "vendor/@shoelace-style/**"
       ]
+    },
+    "lit-html": {
+      "command": "cp -R node_modules/lit-html vendor",
+      "clean": "if-file-deleted",
+      "files": [
+        "node_modules/lit-html/**"
+      ],
+      "output": [
+        "vendor/lit-html/**"
+      ]
     }
   },
   "dependencies": {
@@ -102,6 +113,7 @@
     "detect-port": "^1.5.1",
     "express": "^4.18.2",
     "glob": "^10.3.10",
+    "lit-html": "^3.1.1",
     "mermaid": "^10.6.1",
     "nunjucks": "^3.2.4",
     "open": "^10.0.3"

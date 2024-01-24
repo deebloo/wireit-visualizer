@@ -1,6 +1,7 @@
 import { Graph } from "@viz-js/viz";
 
 import { GraphData } from "../lib/graph.js";
+import { renderTree } from "./file-tree.js";
 
 const lib = import("@viz-js/viz").then((m) => m.instance());
 
@@ -18,14 +19,7 @@ Promise.all([lib, data]).then(([viz, data]) => {
 
   const nodes = svg.querySelectorAll("a");
 
-  const dialog = document.querySelector("sl-dialog") as HTMLDialogElement;
-  const dialogFiles = document.getElementById(
-    "dialog-files"
-  ) as HTMLUListElement;
-
-  const dialogOutputs = document.getElementById(
-    "dialog-outputs"
-  ) as HTMLUListElement;
+  const drawer = document.querySelector("sl-drawer") as HTMLDialogElement;
 
   nodes.forEach((node) => {
     node.addEventListener("contextmenu", (e) => {
@@ -41,25 +35,12 @@ Promise.all([lib, data]).then(([viz, data]) => {
       });
 
       if (node) {
-        dialogFiles.innerHTML = "";
-        dialogOutputs.innerHTML = "";
+        drawer.setAttribute("label", node.id);
 
-        for (let file of node.wireit.files) {
-          const li = document.createElement("li");
-          li.innerHTML = file;
-
-          dialogFiles.append(li);
-        }
-
-        for (let output of node.wireit.outputs) {
-          const li = document.createElement("li");
-          li.innerHTML = output;
-
-          dialogOutputs.append(li);
-        }
+        renderTree(node, drawer);
       }
 
-      dialog.show();
+      drawer.show();
     });
   });
 });

@@ -68,3 +68,29 @@ test("should use standard script if no wireit config", async (t) => {
     output: [],
   });
 });
+
+test("analyzer: should flatten lists of files", async (t) => {
+  const analyzer = new WireitAnalyzer({
+    async read() {
+      return {
+        scripts: {
+          tsc: "wireit",
+        },
+        wireit: {
+          tsc: {
+            command: "tsc --build --pretty",
+            clean: "if-file-deleted",
+            files: ["mock/common/**", "tsconfig.json"],
+            output: ["mock/common/dist**"],
+          },
+        },
+      };
+    },
+  });
+
+  const res = await analyzer.analyze({ name: "tsc", packageDir: "./" });
+
+  t.log(res);
+
+  t.pass();
+});

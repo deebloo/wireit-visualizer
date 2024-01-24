@@ -15,9 +15,9 @@ test("should create graph", (t) => {
     },
   });
 
-  graph.addNode({ id: "a", wireit: { files: [], outputs: [] } });
-  graph.addNode({ id: "b", wireit: { files: [], outputs: [] } });
-  graph.addNode({ id: "c", wireit: { files: [], outputs: [] } });
+  graph.addNode({ id: "a", wireit: { files: [], output: [] } });
+  graph.addNode({ id: "b", wireit: { files: [], output: [] } });
+  graph.addNode({ id: "c", wireit: { files: [], output: [] } });
 
   graph.connect("a", "b");
   graph.connect("b", "c");
@@ -28,22 +28,22 @@ test("should create graph", (t) => {
       {
         id: "a",
         wireit: {
-          files: [],
-          outputs: [],
+          files: {},
+          output: {},
         },
       },
       {
         id: "b",
         wireit: {
-          files: [],
-          outputs: [],
+          files: {},
+          output: {},
         },
       },
       {
         id: "c",
         wireit: {
-          files: [],
-          outputs: [],
+          files: {},
+          output: {},
         },
       },
     ],
@@ -82,15 +82,15 @@ test("should create graph from analyzer", async (t) => {
       {
         id: ":a",
         wireit: {
-          files: [],
-          outputs: [],
+          files: {},
+          output: {},
         },
       },
       {
         id: ":b",
         wireit: {
-          files: [],
-          outputs: [],
+          files: {},
+          output: {},
         },
       },
     ],

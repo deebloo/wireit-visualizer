@@ -1,13 +1,13 @@
 import * as path from "path";
 
-import { Analyzer } from "./analyzer.js";
+import { AnalyzedFile, Analyzer } from "./analyzer.js";
 import { WireitTask } from "./wireit.js";
 
 export interface Node {
   id: string;
   wireit: {
-    files: string[];
-    outputs: string[];
+    files: AnalyzedFile[];
+    output: AnalyzedFile[];
   };
 }
 
@@ -41,11 +41,7 @@ export class Graph {
   }
 
   async analyze(task: WireitTask) {
-    const {
-      dependencies,
-      files,
-      output: outputs,
-    } = await this.#analyzer.analyze(task);
+    const { dependencies, files, output } = await this.#analyzer.analyze(task);
 
     const nodeId = this.createNodeId({
       name: task.name,
@@ -56,7 +52,7 @@ export class Graph {
       id: nodeId,
       wireit: {
         files,
-        outputs,
+        output,
       },
     });
 
