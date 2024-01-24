@@ -8,10 +8,13 @@ npx wireit-visualizer@latest --open
 
 ## Options
 
-| name   | short | description       | default |
-| ------ | ----- | ----------------- | ------- |
-| --port | -p    | server port       | 4200    |
-| --open | -o    | auto open browser | false   |
+| name         | short | description             | default    |
+| ------------ | ----- | ----------------------- | ---------- |
+| --port       | -p    | server port             | 4200       |
+| --open       | -o    | auto open browser       | false      |
+| --visualizer | -v    | "graphviz" \| "mermaid" | "graphviz" |
+
+## Example Output
 
 This repo generats the following graph
 
@@ -32,3 +35,17 @@ graph LR
 ```
 
 This repo is a POC for the following issue filed on the wireit repo. https://github.com/google/wireit/issues/977
+
+## Development
+
+### Install
+
+```bash
+npm i
+```
+
+### Start local server (in watch mode)
+
+```bash
+npm start --watch
+```
