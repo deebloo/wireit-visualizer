@@ -20,7 +20,6 @@ Promise.all([lib, data]).then(async ([mermaid, data]) => {
   const drawer = document.querySelector("sl-drawer")!;
 
   document.addEventListener("contextmenu", (e) => {
-    console.log(e.target);
     if (e.target instanceof HTMLAnchorElement) {
       e.preventDefault();
       e.stopPropagation();

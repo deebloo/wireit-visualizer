@@ -28,22 +28,22 @@ test("should create graph", (t) => {
       {
         id: "a",
         wireit: {
-          files: {},
-          output: {},
+          files: [],
+          output: [],
         },
       },
       {
         id: "b",
         wireit: {
-          files: {},
-          output: {},
+          files: [],
+          output: [],
         },
       },
       {
         id: "c",
         wireit: {
-          files: {},
-          output: {},
+          files: [],
+          output: [],
         },
       },
     ],
@@ -82,15 +82,15 @@ test("should create graph from analyzer", async (t) => {
       {
         id: ":a",
         wireit: {
-          files: {},
-          output: {},
+          files: [],
+          output: [],
         },
       },
       {
         id: ":b",
         wireit: {
-          files: {},
-          output: {},
+          files: [],
+          output: [],
         },
       },
     ],

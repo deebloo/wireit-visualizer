@@ -90,7 +90,93 @@ test("analyzer: should flatten lists of files", async (t) => {
 
   const res = await analyzer.analyze({ name: "tsc", packageDir: "./" });
 
-  t.log(res);
-
-  t.pass();
+  t.deepEqual(res, {
+    dependencies: [],
+    files: [
+      {
+        id: "Y29tbW9uLW1vY2s=",
+        name: "common",
+        parent: "bW9jaw==",
+      },
+      {
+        id: "bW9jaw==",
+        name: "mock",
+      },
+      {
+        id: "dHNjb25maWcuanNvbg==",
+        name: "tsconfig.json",
+      },
+      {
+        id: "c3JjLWNvbW1vbi1tb2Nr",
+        name: "src",
+        parent: "Y29tbW9uLW1vY2s=",
+      },
+      {
+        id: "cGFja2FnZS5qc29uLWNvbW1vbi1tb2Nr",
+        name: "package.json",
+        parent: "Y29tbW9uLW1vY2s=",
+      },
+      {
+        id: "ZGlzdC1jb21tb24tbW9jaw==",
+        name: "dist",
+        parent: "Y29tbW9uLW1vY2s=",
+      },
+      {
+        id: "bWFpbi50cy1zcmMtY29tbW9uLW1vY2s=",
+        name: "main.ts",
+        parent: "c3JjLWNvbW1vbi1tb2Nr",
+      },
+      {
+        id: "bWFpbi1zcmMtY29tbW9uLW1vY2s=",
+        name: "main",
+        parent: "c3JjLWNvbW1vbi1tb2Nr",
+      },
+      {
+        id: "bWFpbi5qcy1kaXN0LWNvbW1vbi1tb2Nr",
+        name: "main.js",
+        parent: "ZGlzdC1jb21tb24tbW9jaw==",
+      },
+      {
+        id: "bWFpbi1kaXN0LWNvbW1vbi1tb2Nr",
+        name: "main",
+        parent: "ZGlzdC1jb21tb24tbW9jaw==",
+      },
+      {
+        id: "Zm9vLnRzLW1haW4tc3JjLWNvbW1vbi1tb2Nr",
+        name: "foo.ts",
+        parent: "bWFpbi1zcmMtY29tbW9uLW1vY2s=",
+      },
+      {
+        id: "YmFyLnRzLW1haW4tc3JjLWNvbW1vbi1tb2Nr",
+        name: "bar.ts",
+        parent: "bWFpbi1zcmMtY29tbW9uLW1vY2s=",
+      },
+      {
+        id: "Zm9vLmpzLW1haW4tZGlzdC1jb21tb24tbW9jaw==",
+        name: "foo.js",
+        parent: "bWFpbi1kaXN0LWNvbW1vbi1tb2Nr",
+      },
+      {
+        id: "YmFyLmpzLW1haW4tZGlzdC1jb21tb24tbW9jaw==",
+        name: "bar.js",
+        parent: "bWFpbi1kaXN0LWNvbW1vbi1tb2Nr",
+      },
+    ],
+    output: [
+      {
+        id: "ZGlzdC1jb21tb24tbW9jaw==",
+        name: "dist",
+        parent: "Y29tbW9uLW1vY2s=",
+      },
+      {
+        id: "Y29tbW9uLW1vY2s=",
+        name: "common",
+        parent: "bW9jaw==",
+      },
+      {
+        id: "bW9jaw==",
+        name: "mock",
+      },
+    ],
+  });
 });
