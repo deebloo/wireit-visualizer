@@ -14,11 +14,12 @@ Promise.all([lib, data]).then(([viz, data]) => {
   const svg = viz.renderSVGElement(data.parsed);
   const str = viz.renderString(data.parsed);
 
-  document.getElementById("mynetwork")!.appendChild(svg);
+  const network = document.getElementById("mynetwork")!;
+
+  network.appendChild(svg);
   document.getElementById("mynetworkconfig")!.innerHTML = str;
 
   const nodes = svg.querySelectorAll("a");
-
   const drawer = document.querySelector("sl-drawer") as HTMLDialogElement;
 
   nodes.forEach((node) => {
