@@ -17,7 +17,7 @@ Promise.all([lib, data]).then(async ([mermaid, data]) => {
 
   document.getElementById("mynetwork")!.innerHTML = res.svg;
 
-  const drawer = document.querySelector("sl-drawer") as HTMLDialogElement;
+  const drawer = document.querySelector("sl-drawer")!;
 
   document.addEventListener("contextmenu", (e) => {
     console.log(e.target);

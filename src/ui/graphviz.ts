@@ -20,7 +20,7 @@ Promise.all([lib, data]).then(([viz, data]) => {
   document.getElementById("mynetworkconfig")!.innerHTML = str;
 
   const nodes = svg.querySelectorAll("a");
-  const drawer = document.querySelector("sl-drawer") as HTMLDialogElement;
+  const drawer = document.querySelector("sl-drawer")!;
 
   nodes.forEach((node) => {
     node.addEventListener("contextmenu", (e) => {
