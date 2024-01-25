@@ -8,7 +8,7 @@ export function renderTree(node: Node, host: HTMLElement) {
   render(
     html`
       <h2>Files</h2>
-      <sl-tree>${createTreeItems(node.wireit.files, undefined)}</sl-tree>
+      <sl-tree>${createTreeItems(node.wireit.files, undefined)} </sl-tree>
 
       <h2>Output</h2>
       <sl-tree>${createTreeItems(node.wireit.output, undefined)}</sl-tree>
@@ -21,23 +21,24 @@ function createTreeItems(source: AnalyzedFile[], current: string | undefined) {
   const files = source.filter((file) => file.parent === current);
 
   return files.map((file) => {
-    const isFolder = file.name.split(".").length <= 1;
-
     const treeItem = document.createElement("sl-tree-item");
+    const icon = document.createElement("sl-icon");
 
-    if (isFolder) {
+    if (file.type === "folder") {
       treeItem.lazy = true;
-
-      const icon = document.createElement("sl-icon");
       icon.name = "folder";
-
-      treeItem.append(icon);
+    } else {
+      icon.name = "filetype-" + file.type;
     }
 
+    treeItem.append(icon);
     treeItem.append(document.createTextNode(file.name));
 
-    treeItem.addEventListener("sl-lazy-load", () => {
+    treeItem.addEventListener("sl-lazy-load", (e) => {
+      e.stopPropagation();
+
       treeItem.append(...createTreeItems(source, file.id));
+      treeItem.lazy = false;
     });
 
     return treeItem;

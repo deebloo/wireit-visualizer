@@ -1,5 +1,5 @@
-import { resolve } from "node:path";
-import { readFile } from "node:fs/promises";
+import { resolve, extname } from "node:path";
+import { readFile, lstat } from "node:fs/promises";
 import { glob } from "glob";
 
 import { WireitDependency, WireitPackage, WireitTask } from "./wireit.js";
@@ -7,6 +7,7 @@ import { WireitDependency, WireitPackage, WireitTask } from "./wireit.js";
 export interface AnalyzedFile {
   id: string;
   name: string;
+  type: string;
   parent?: string;
 }
 
@@ -46,67 +47,11 @@ export class WireitAnalyzer implements Analyzer {
       }
 
       if (taskConfig.files) {
-        const files = await glob(taskConfig.files);
-        const ids = new Set<string>();
-        const res: AnalyzedFile[] = [];
-
-        for (let file of files) {
-          const parsed = file.split("/").reverse();
-
-          while (parsed.length) {
-            const id = btoa(parsed.join("-"));
-            const name = parsed.shift();
-
-            if (name && !ids.has(id)) {
-              const file: AnalyzedFile = {
-                id,
-                name,
-              };
-
-              if (parsed.length) {
-                file.parent = btoa(parsed.join("-"));
-              }
-
-              res.push(file);
-
-              ids.add(id);
-            }
-          }
-        }
-
-        taskFiles = res;
+        taskFiles = await this.analyzeFiles(taskConfig.files);
       }
 
       if (taskConfig.output) {
-        const files = await glob(taskConfig.output);
-        const ids = new Set<string>();
-        const res: AnalyzedFile[] = [];
-
-        for (let file of files) {
-          const parsed = file.split("/").reverse();
-
-          while (parsed.length) {
-            const id = btoa(parsed.join("-"));
-            const name = parsed.shift();
-
-            if (name && !ids.has(id)) {
-              const file: AnalyzedFile = {
-                id,
-                name,
-              };
-
-              if (parsed.length) {
-                file.parent = btoa(parsed.join("-"));
-              }
-
-              res.push(file);
-
-              ids.add(id);
-            }
-          }
-        }
-
-        taskOutput = res;
+        taskOutput = await this.analyzeFiles(taskConfig.output);
       }
     }
 
@@ -132,6 +77,41 @@ export class WireitAnalyzer implements Analyzer {
         };
       }),
     };
+  }
+
+  async analyzeFiles(taskFiles: string[]) {
+    const files = await glob(taskFiles);
+    const ids = new Set<string>();
+    const res: AnalyzedFile[] = [];
+
+    for (let file of files) {
+      const parsed = file.split("/").reverse();
+
+      while (parsed.length) {
+        const id = btoa(parsed.join("-"));
+        const name = parsed.shift();
+
+        if (name && !ids.has(id)) {
+          const newFile: AnalyzedFile = {
+            type: (await lstat(file)).isDirectory()
+              ? "folder"
+              : (extname(file).split(".").pop() as string),
+            id,
+            name,
+          };
+
+          if (parsed.length) {
+            newFile.parent = btoa(parsed.join("-"));
+          }
+
+          res.push(newFile);
+
+          ids.add(id);
+        }
+      }
+    }
+
+    return res;
   }
 }
 
