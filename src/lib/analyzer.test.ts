@@ -117,7 +117,7 @@ test("analyzer: should flatten lists of files", async (t) => {
         id: "bWFpbi50cy1zcmMtY29tbW9uLW1vY2s=",
         name: "main.ts",
         parent: "c3JjLWNvbW1vbi1tb2Nr",
-        type: "file",
+        type: "ts",
       },
       {
         id: "bWFpbi1zcmMtY29tbW9uLW1vY2s=",
@@ -129,13 +129,13 @@ test("analyzer: should flatten lists of files", async (t) => {
         id: "Zm9vLnRzLW1haW4tc3JjLWNvbW1vbi1tb2Nr",
         name: "foo.ts",
         parent: "bWFpbi1zcmMtY29tbW9uLW1vY2s=",
-        type: "file",
+        type: "ts",
       },
       {
         id: "YmFyLnRzLW1haW4tc3JjLWNvbW1vbi1tb2Nr",
         name: "bar.ts",
         parent: "bWFpbi1zcmMtY29tbW9uLW1vY2s=",
-        type: "file",
+        type: "ts",
       },
     ],
     output: [
@@ -160,7 +160,7 @@ test("analyzer: should flatten lists of files", async (t) => {
         id: "bWFpbi5qcy1kaXN0LWNvbW1vbi1tb2Nr",
         name: "main.js",
         parent: "ZGlzdC1jb21tb24tbW9jaw==",
-        type: "file",
+        type: "js",
       },
       {
         id: "bWFpbi1kaXN0LWNvbW1vbi1tb2Nr",
@@ -172,13 +172,13 @@ test("analyzer: should flatten lists of files", async (t) => {
         id: "Zm9vLmpzLW1haW4tZGlzdC1jb21tb24tbW9jaw==",
         name: "foo.js",
         parent: "bWFpbi1kaXN0LWNvbW1vbi1tb2Nr",
-        type: "file",
+        type: "js",
       },
       {
         id: "YmFyLmpzLW1haW4tZGlzdC1jb21tb24tbW9jaw==",
         name: "bar.js",
         parent: "bWFpbi1kaXN0LWNvbW1vbi1tb2Nr",
-        type: "file",
+        type: "js",
       },
     ],
   });
