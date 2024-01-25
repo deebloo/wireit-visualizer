@@ -71,7 +71,7 @@
       ]
     },
     "graphviz": {
-      "command": "cp -R node_modules/@viz-js vendor",
+      "command": "copyfiles -u 1 \"node_modules/@viz-js/**/*\" vendor",
       "clean": "if-file-deleted",
       "files": [
         "node_modules/@viz-js/**"
@@ -81,7 +81,7 @@
       ]
     },
     "mermaid": {
-      "command": "cp -R node_modules/mermaid vendor",
+      "command": "copyfiles -u 1 \"node_modules/mermaid/**/*\" vendor",
       "clean": "if-file-deleted",
       "files": [
         "node_modules/mermaid/**"
@@ -91,7 +91,7 @@
       ]
     },
     "shoelace": {
-      "command": "cp -R node_modules/@shoelace-style vendor",
+      "command": "copyfiles -u 1 \"node_modules/@shoelace-style/**/*\" vendor",
       "clean": "if-file-deleted",
       "files": [
         "node_modules/@shoelace-style/**"
@@ -101,7 +101,7 @@
       ]
     },
     "lit-html": {
-      "command": "cp -R node_modules/lit-html vendor/lit-html",
+      "command": "copyfiles -u 1 \"node_modules/lit-html/**/*\" vendor",
       "clean": "if-file-deleted",
       "files": [
         "node_modules/lit-html/**"
@@ -127,6 +127,7 @@
     "@types/nunjucks": "^3.2.6",
     "@viz-js/viz": "^3.2.3",
     "ava": "^5.3.1",
+    "copyfiles": "^2.4.1",
     "typescript": "^5.3.2",
     "wireit": "^0.14.1"
   }
