@@ -35,8 +35,6 @@ Promise.all([lib, data]).then(([viz, data]) => {
         return node.id === params.get("task");
       });
 
-      console.log(node?.wireit.files);
-
       if (node) {
         drawer.setAttribute("label", node.id);
 

@@ -101,7 +101,7 @@
       ]
     },
     "lit-html": {
-      "command": "cp -R node_modules/lit-html vendor",
+      "command": "cp -R node_modules/lit-html vendor/lit-html",
       "clean": "if-file-deleted",
       "files": [
         "node_modules/lit-html/**"
