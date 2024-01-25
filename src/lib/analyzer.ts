@@ -1,4 +1,4 @@
-import { resolve, extname } from "node:path";
+import { resolve, extname, relative } from "node:path";
 import { readFile, lstat } from "node:fs/promises";
 import { glob } from "glob";
 
@@ -47,11 +47,11 @@ export class WireitAnalyzer implements Analyzer {
       }
 
       if (taskConfig.files) {
-        taskFiles = await this.analyzeFiles(taskConfig.files);
+        taskFiles = await this.analyzeFiles(task, taskConfig.files);
       }
 
       if (taskConfig.output) {
-        taskOutput = await this.analyzeFiles(taskConfig.output);
+        taskOutput = await this.analyzeFiles(task, taskConfig.output);
       }
     }
 
@@ -79,13 +79,18 @@ export class WireitAnalyzer implements Analyzer {
     };
   }
 
-  async analyzeFiles(taskFiles: string[]) {
-    const files = await glob(taskFiles);
+  async analyzeFiles(task: WireitTask, taskFiles: string[]) {
+    const files = await glob(
+      taskFiles.map((file) => {
+        return resolve(task.packageDir, file);
+      })
+    );
+
     const ids = new Set<string>();
     const res: AnalyzedFile[] = [];
 
     for (let file of files) {
-      const parsed = file.split("/").reverse();
+      const parsed = relative(task.packageDir, file).split("/").reverse();
 
       while (parsed.length) {
         const id = btoa(parsed.join("-"));

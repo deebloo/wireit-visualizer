@@ -4,12 +4,25 @@
     "build": {
       "command": "echo 'build'",
       "dependencies": [
-        "../core:build",
-        "css"
+        "tsc",
+        "css",
+        "../core:build"
       ]
     },
     "css": {
       "command": "echo 'css'"
+    },
+    "tsc": {
+      "command": "tsc --build --pretty",
+      "clean": "if-file-deleted",
+      "files": [
+        "src/**",
+        "tsconfig.json"
+      ],
+      "output": [
+        "dist/**",
+        "tsconfig.tsbuildinfo"
+      ]
     }
   }
 }
