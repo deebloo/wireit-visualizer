@@ -1,5 +1,5 @@
 import { resolve } from "node:path";
-import { readFile } from "node:fs/promises";
+import { readFile, lstat } from "node:fs/promises";
 import { glob } from "glob";
 
 import { WireitDependency, WireitPackage, WireitTask } from "./wireit.js";
@@ -7,6 +7,7 @@ import { WireitDependency, WireitPackage, WireitTask } from "./wireit.js";
 export interface AnalyzedFile {
   id: string;
   name: string;
+  type: "file" | "folder";
   parent?: string;
 }
 
@@ -58,16 +59,17 @@ export class WireitAnalyzer implements Analyzer {
             const name = parsed.shift();
 
             if (name && !ids.has(id)) {
-              const file: AnalyzedFile = {
+              const newFile: AnalyzedFile = {
+                type: (await lstat(file)).isDirectory() ? "folder" : "file",
                 id,
                 name,
               };
 
               if (parsed.length) {
-                file.parent = btoa(parsed.join("-"));
+                newFile.parent = btoa(parsed.join("-"));
               }
 
-              res.push(file);
+              res.push(newFile);
 
               ids.add(id);
             }
@@ -90,16 +92,17 @@ export class WireitAnalyzer implements Analyzer {
             const name = parsed.shift();
 
             if (name && !ids.has(id)) {
-              const file: AnalyzedFile = {
+              const newFile: AnalyzedFile = {
+                type: (await lstat(file)).isDirectory() ? "folder" : "file",
                 id,
                 name,
               };
 
               if (parsed.length) {
-                file.parent = btoa(parsed.join("-"));
+                newFile.parent = btoa(parsed.join("-"));
               }
 
-              res.push(file);
+              res.push(newFile);
 
               ids.add(id);
             }

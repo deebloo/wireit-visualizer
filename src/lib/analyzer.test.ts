@@ -80,86 +80,62 @@ test("analyzer: should flatten lists of files", async (t) => {
           tsc: {
             command: "tsc --build --pretty",
             clean: "if-file-deleted",
-            files: ["mock/common/**", "tsconfig.json"],
-            output: ["mock/common/dist**"],
+            files: ["mock/common/src/**", "mock/common/tsconfig.json"],
+            output: ["mock/common/dist/**"],
           },
         },
       };
     },
   });
 
-  const res = await analyzer.analyze({ name: "tsc", packageDir: "./" });
+  const res = await analyzer.analyze({
+    name: "tsc",
+    packageDir: "./mock/common",
+  });
 
   t.deepEqual(res, {
     dependencies: [],
     files: [
       {
+        id: "c3JjLWNvbW1vbi1tb2Nr",
+        name: "src",
+        parent: "Y29tbW9uLW1vY2s=",
+        type: "folder",
+      },
+      {
         id: "Y29tbW9uLW1vY2s=",
         name: "common",
         parent: "bW9jaw==",
+        type: "folder",
       },
       {
         id: "bW9jaw==",
         name: "mock",
-      },
-      {
-        id: "dHNjb25maWcuanNvbg==",
-        name: "tsconfig.json",
-      },
-      {
-        id: "c3JjLWNvbW1vbi1tb2Nr",
-        name: "src",
-        parent: "Y29tbW9uLW1vY2s=",
-      },
-      {
-        id: "cGFja2FnZS5qc29uLWNvbW1vbi1tb2Nr",
-        name: "package.json",
-        parent: "Y29tbW9uLW1vY2s=",
-      },
-      {
-        id: "ZGlzdC1jb21tb24tbW9jaw==",
-        name: "dist",
-        parent: "Y29tbW9uLW1vY2s=",
+        type: "folder",
       },
       {
         id: "bWFpbi50cy1zcmMtY29tbW9uLW1vY2s=",
         name: "main.ts",
         parent: "c3JjLWNvbW1vbi1tb2Nr",
+        type: "file",
       },
       {
         id: "bWFpbi1zcmMtY29tbW9uLW1vY2s=",
         name: "main",
         parent: "c3JjLWNvbW1vbi1tb2Nr",
-      },
-      {
-        id: "bWFpbi5qcy1kaXN0LWNvbW1vbi1tb2Nr",
-        name: "main.js",
-        parent: "ZGlzdC1jb21tb24tbW9jaw==",
-      },
-      {
-        id: "bWFpbi1kaXN0LWNvbW1vbi1tb2Nr",
-        name: "main",
-        parent: "ZGlzdC1jb21tb24tbW9jaw==",
+        type: "folder",
       },
       {
         id: "Zm9vLnRzLW1haW4tc3JjLWNvbW1vbi1tb2Nr",
         name: "foo.ts",
         parent: "bWFpbi1zcmMtY29tbW9uLW1vY2s=",
+        type: "file",
       },
       {
         id: "YmFyLnRzLW1haW4tc3JjLWNvbW1vbi1tb2Nr",
         name: "bar.ts",
         parent: "bWFpbi1zcmMtY29tbW9uLW1vY2s=",
-      },
-      {
-        id: "Zm9vLmpzLW1haW4tZGlzdC1jb21tb24tbW9jaw==",
-        name: "foo.js",
-        parent: "bWFpbi1kaXN0LWNvbW1vbi1tb2Nr",
-      },
-      {
-        id: "YmFyLmpzLW1haW4tZGlzdC1jb21tb24tbW9jaw==",
-        name: "bar.js",
-        parent: "bWFpbi1kaXN0LWNvbW1vbi1tb2Nr",
+        type: "file",
       },
     ],
     output: [
@@ -167,15 +143,42 @@ test("analyzer: should flatten lists of files", async (t) => {
         id: "ZGlzdC1jb21tb24tbW9jaw==",
         name: "dist",
         parent: "Y29tbW9uLW1vY2s=",
+        type: "folder",
       },
       {
         id: "Y29tbW9uLW1vY2s=",
         name: "common",
         parent: "bW9jaw==",
+        type: "folder",
       },
       {
         id: "bW9jaw==",
         name: "mock",
+        type: "folder",
+      },
+      {
+        id: "bWFpbi5qcy1kaXN0LWNvbW1vbi1tb2Nr",
+        name: "main.js",
+        parent: "ZGlzdC1jb21tb24tbW9jaw==",
+        type: "file",
+      },
+      {
+        id: "bWFpbi1kaXN0LWNvbW1vbi1tb2Nr",
+        name: "main",
+        parent: "ZGlzdC1jb21tb24tbW9jaw==",
+        type: "folder",
+      },
+      {
+        id: "Zm9vLmpzLW1haW4tZGlzdC1jb21tb24tbW9jaw==",
+        name: "foo.js",
+        parent: "bWFpbi1kaXN0LWNvbW1vbi1tb2Nr",
+        type: "file",
+      },
+      {
+        id: "YmFyLmpzLW1haW4tZGlzdC1jb21tb24tbW9jaw==",
+        name: "bar.js",
+        parent: "bWFpbi1kaXN0LWNvbW1vbi1tb2Nr",
+        type: "file",
       },
     ],
   });

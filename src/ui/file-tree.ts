@@ -21,11 +21,10 @@ function createTreeItems(source: AnalyzedFile[], current: string | undefined) {
   const files = source.filter((file) => file.parent === current);
 
   return files.map((file) => {
-    const isFolder = file.name.split(".").length <= 1;
     const treeItem = document.createElement("sl-tree-item");
     const icon = document.createElement("sl-icon");
 
-    if (isFolder) {
+    if (file.type === "folder") {
       treeItem.lazy = true;
       icon.name = "folder";
     } else {
