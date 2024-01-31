@@ -41,20 +41,22 @@ export class Graph {
   }
 
   graphFor(task: WireitTask) {
-    const id = this.createNodeId(task);
-
+    const id = this.#createNodeId(task);
     const nodes = new Set<string>();
-
     const data: GraphData = {
       nodes: [],
-      edges: this.#graph.edges.filter((edge) => {
-        return edge.from === id || edge.to === id;
-      }),
+      edges: [],
     };
 
-    for (let edge of data.edges) {
-      nodes.add(edge.to);
-      nodes.add(edge.from);
+    // find any edges that reference the given task.
+    // track all node ids for use when filtering nodes
+    for (let edge of this.#graph.edges) {
+      if (edge.from === id || edge.to === id) {
+        nodes.add(edge.to);
+        nodes.add(edge.from);
+
+        data.edges.push(edge);
+      }
     }
 
     data.nodes = this.#graph.nodes.filter((node) => nodes.has(node.id));
@@ -65,7 +67,7 @@ export class Graph {
   async analyze(task: WireitTask) {
     const { dependencies, files, output } = await this.#analyzer.analyze(task);
 
-    const nodeId = this.createNodeId({
+    const nodeId = this.#createNodeId({
       name: task.name,
       packageDir: path.resolve(task.packageDir),
     });
@@ -79,7 +81,7 @@ export class Graph {
     });
 
     for (let dep of dependencies) {
-      const depNodeId = this.createNodeId({
+      const depNodeId = this.#createNodeId({
         name: dep.name,
         packageDir: path.resolve(dep.packageDir),
       });
@@ -114,7 +116,7 @@ export class Graph {
     });
   }
 
-  createNodeId({
+  #createNodeId({
     name,
     packageDir,
   }: {
