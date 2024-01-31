@@ -40,6 +40,28 @@ export class Graph {
     return this.#graph;
   }
 
+  graphFor(task: WireitTask) {
+    const id = this.createNodeId(task);
+
+    const nodes = new Set<string>();
+
+    const data: GraphData = {
+      nodes: [],
+      edges: this.#graph.edges.filter((edge) => {
+        return edge.from === id || edge.to === id;
+      }),
+    };
+
+    for (let edge of data.edges) {
+      nodes.add(edge.to);
+      nodes.add(edge.from);
+    }
+
+    data.nodes = this.#graph.nodes.filter((node) => nodes.has(node.id));
+
+    return data;
+  }
+
   async analyze(task: WireitTask) {
     const { dependencies, files, output } = await this.#analyzer.analyze(task);
 

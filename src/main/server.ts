@@ -25,15 +25,8 @@ export async function startServer() {
   app.use(express.static(resolve(__dirname, "../../target/ui")));
   app.use(express.static(resolve(__dirname, "../../vendor")));
 
-  app.get("/api/graph", async (req, res) => {
-    const tasks = determineTasks(req.query.task);
-    const analysis = await analyzeTasks(tasks);
-
-    res.send(analysis.graph);
-  });
-
   app.get("/api/graph/:graphType", async (req, res) => {
-    const tasks = determineTasks(req.query.task);
+    const tasks = determineTasks();
     const analysis = await analyzeTasks(tasks);
 
     let parser: GraphParser<unknown> | null = null;
@@ -49,9 +42,20 @@ export async function startServer() {
     }
 
     if (parser) {
+      let graph = analysis.graph;
+
+      if (typeof req.query.task === "string") {
+        const [packageDir, ...task] = (req.query.task as string).split(":");
+
+        graph = analysis.graphFor({
+          name: task.join(":"),
+          packageDir,
+        });
+      }
+
       res.send({
-        source: analysis.graph,
-        parsed: parser.parse(analysis.graph),
+        source: graph,
+        parsed: parser.parse(graph),
       });
     } else {
       res.status(404).send(`Graph type "${req.params.graphType}" not defined`);
