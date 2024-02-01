@@ -52,7 +52,10 @@
       ],
       "output": [],
       "dependencies": [
-        "build"
+        {
+          "script": "build",
+          "cascade": false
+        }
       ]
     },
     "tsc": {
