@@ -1,5 +1,5 @@
 import { resolve, extname, relative } from "node:path";
-import { readFile, lstat } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import { glob } from "glob";
 
 import { WireitDependency, WireitPackage, WireitTask } from "./wireit.js";
@@ -92,21 +92,21 @@ export class WireitAnalyzer implements Analyzer {
     for (let file of files) {
       const parsed = relative(task.packageDir, file).split("/").reverse();
 
-      while (parsed.length) {
-        const id = btoa(parsed.join("-"));
+      while (parsed.length > 0) {
+        const id = parsed.join("/");
         const name = parsed.shift();
 
         if (name && !ids.has(id)) {
+          const ext = extname(name);
+
           const newFile: AnalyzedFile = {
-            type: (await lstat(file)).isDirectory()
-              ? "folder"
-              : (extname(file).split(".").pop() as string),
+            type: ext ? ext.substring(1) : "folder",
             id,
             name,
           };
 
           if (parsed.length) {
-            newFile.parent = btoa(parsed.join("-"));
+            newFile.parent = parsed.join("/");
           }
 
           res.push(newFile);
