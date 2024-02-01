@@ -28,7 +28,7 @@ function createTreeItems(source: AnalyzedFile[], current: string | undefined) {
       treeItem.lazy = true;
       icon.name = "folder";
     } else {
-      icon.name = "filetype-" + file.type;
+      icon.name = "file";
     }
 
     treeItem.append(icon);
