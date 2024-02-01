@@ -22,7 +22,7 @@ Promise.all([lib, data]).then(([viz, data]) => {
   const nodes = svg.querySelectorAll("a");
   const drawer = document.querySelector("sl-drawer")!;
 
-  nodes.forEach((node) => {
+  for (let node of nodes) {
     node.addEventListener("contextmenu", (e) => {
       e.preventDefault();
 
@@ -43,5 +43,5 @@ Promise.all([lib, data]).then(([viz, data]) => {
 
       drawer.show();
     });
-  });
+  }
 });

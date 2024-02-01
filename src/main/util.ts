@@ -22,27 +22,11 @@ export async function analyzeTasks(tasks: string[]) {
   return graph;
 }
 
-export function determineTasks(
-  taskQuery?: string | ParsedQs | string[] | ParsedQs[] | undefined
-) {
-  let tasks: string[] = [];
+export function determineTasks() {
+  // if not tasks are defined, find them in the root package.json
+  const projectJson = JSON.parse(
+    readFileSync(resolve("./package.json")).toString()
+  );
 
-  if (typeof taskQuery === "string") {
-    tasks.push(taskQuery);
-  } else if (Array.isArray(taskQuery)) {
-    for (let task of taskQuery) {
-      if (typeof task === "string") {
-        tasks.push(task);
-      }
-    }
-  } else if (!taskQuery) {
-    // if not tasks are defined, find them in the root package.json
-    const projectJson = JSON.parse(
-      readFileSync(resolve("./package.json")).toString()
-    );
-
-    tasks = Object.keys(projectJson.wireit).map((task) => `./:${task}`);
-  }
-
-  return tasks;
+  return Object.keys(projectJson.wireit).map((task) => `./:${task}`);
 }
