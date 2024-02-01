@@ -95,91 +95,44 @@ test("analyzer: should flatten lists of files", async (t) => {
   });
 
   t.deepEqual(res, {
-    dependencies: [],
     files: [
-      {
-        id: "c3Jj",
-        name: "src",
-        type: "folder",
-      },
-      {
-        id: "dHNjb25maWcuanNvbg==",
-        name: "tsconfig.json",
-        type: "json",
-      },
-      {
-        id: "bWFpbi50cy1zcmM=",
-        name: "main.ts",
-        parent: "c3Jj",
-        type: "ts",
-      },
-      {
-        id: "bWFpbi1zcmM=",
-        name: "main",
-        parent: "c3Jj",
-        type: "folder",
-      },
-      {
-        id: "Zm9vLnRzLW1haW4tc3Jj",
-        name: "foo.ts",
-        parent: "bWFpbi1zcmM=",
-        type: "ts",
-      },
-      {
-        id: "YmFyLnRzLW1haW4tc3Jj",
-        name: "bar.ts",
-        parent: "bWFpbi1zcmM=",
-        type: "ts",
-      },
+      { type: "folder", id: "src", name: "src" },
+      { type: "json", id: "tsconfig.json", name: "tsconfig.json" },
+      { type: "ts", id: "main.ts/src", name: "main.ts", parent: "src" },
+      { type: "folder", id: "main/src", name: "main", parent: "src" },
+      { type: "ts", id: "foo.ts/main/src", name: "foo.ts", parent: "main/src" },
+      { type: "ts", id: "bar.ts/main/src", name: "bar.ts", parent: "main/src" },
     ],
     output: [
+      { type: "folder", id: "dist", name: "dist" },
+      { type: "js", id: "main.js/dist", name: "main.js", parent: "dist" },
+      { type: "ts", id: "main.d.ts/dist", name: "main.d.ts", parent: "dist" },
+      { type: "folder", id: "main/dist", name: "main", parent: "dist" },
       {
-        id: "ZGlzdA==",
-        name: "dist",
-        type: "folder",
-      },
-      {
-        id: "bWFpbi5qcy1kaXN0",
-        name: "main.js",
-        parent: "ZGlzdA==",
         type: "js",
-      },
-      {
-        id: "bWFpbi5kLnRzLWRpc3Q=",
-        name: "main.d.ts",
-        parent: "ZGlzdA==",
-        type: "ts",
-      },
-      {
-        id: "bWFpbi1kaXN0",
-        name: "main",
-        parent: "ZGlzdA==",
-        type: "folder",
-      },
-      {
-        id: "Zm9vLmpzLW1haW4tZGlzdA==",
+        id: "foo.js/main/dist",
         name: "foo.js",
-        parent: "bWFpbi1kaXN0",
-        type: "js",
+        parent: "main/dist",
       },
       {
-        id: "Zm9vLmQudHMtbWFpbi1kaXN0",
+        type: "ts",
+        id: "foo.d.ts/main/dist",
         name: "foo.d.ts",
-        parent: "bWFpbi1kaXN0",
-        type: "ts",
+        parent: "main/dist",
       },
       {
-        id: "YmFyLmpzLW1haW4tZGlzdA==",
-        name: "bar.js",
-        parent: "bWFpbi1kaXN0",
         type: "js",
+        id: "bar.js/main/dist",
+        name: "bar.js",
+        parent: "main/dist",
       },
       {
-        id: "YmFyLmQudHMtbWFpbi1kaXN0",
-        name: "bar.d.ts",
-        parent: "bWFpbi1kaXN0",
         type: "ts",
+        id: "bar.d.ts/main/dist",
+        name: "bar.d.ts",
+        parent: "main/dist",
       },
     ],
+    dependencies: [],
   });
 });
