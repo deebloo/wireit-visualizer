@@ -46,14 +46,14 @@
       ]
     },
     "test": {
-      "command": "ava target/**/*.test.js",
+      "command": "node --test",
       "files": [
         "target/**"
       ],
       "output": [],
       "dependencies": [
         {
-          "script": "build",
+          "script": "tsc",
           "cascade": false
         }
       ]
@@ -129,7 +129,6 @@
     "@types/express": "^4.17.21",
     "@types/nunjucks": "^3.2.6",
     "@viz-js/viz": "^3.2.3",
-    "ava": "^5.3.1",
     "copyfiles": "^2.4.1",
     "typescript": "^5.3.2",
     "wireit": "^0.14.1"

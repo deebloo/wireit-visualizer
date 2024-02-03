@@ -1,4 +1,5 @@
-import test from "ava";
+import test from "node:test";
+import assert from "node:assert";
 import path from "node:path";
 
 import { WireitAnalyzer } from "./analyzer.js";
@@ -13,7 +14,7 @@ test("should locate package json file", async (t) => {
             dependencies: ["tsc", { script: "css" }],
           },
           tsc: {
-            command: "tsc",
+            command: "tsdeepEqualc",
           },
           css: {
             command: "css",
@@ -25,7 +26,7 @@ test("should locate package json file", async (t) => {
 
   const res = await analyzer.analyze({ name: "build", packageDir: "./" });
 
-  t.deepEqual(res, {
+  assert.deepEqual(res, {
     dependencies: [
       {
         name: "tsc",
@@ -63,7 +64,7 @@ test("should use standard script if no wireit config", async (t) => {
 
   const res = await analyzer.analyze({ name: "tsc", packageDir: "./" });
 
-  t.deepEqual(res, {
+  assert.deepEqual(res, {
     dependencies: [],
     files: [],
     output: [],
@@ -94,7 +95,7 @@ test("analyzer: should flatten lists of files", async (t) => {
     packageDir: path.resolve("./mock/common"),
   });
 
-  t.deepEqual(res, {
+  assert.deepEqual(res, {
     files: [
       { type: "folder", id: "src", name: "src" },
       { type: "json", id: "tsconfig.json", name: "tsconfig.json" },

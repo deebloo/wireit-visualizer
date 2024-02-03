@@ -1,4 +1,5 @@
-import test from "ava";
+import test from "node:test";
+import assert from "node:assert";
 
 import { Graph } from "./graph.js";
 import { AnalyzerResult } from "./analyzer.js";
@@ -23,7 +24,7 @@ test("should create graph", (t) => {
   graph.connect("b", "c");
   graph.connect("c", "a");
 
-  t.deepEqual(graph.graph, {
+  assert.deepEqual(graph.graph, {
     nodes: [
       {
         id: "a",
@@ -77,7 +78,7 @@ test("should create graph from analyzer", async (t) => {
 
   await graph.analyze({ name: "a", packageDir: "./" });
 
-  t.deepEqual(graph.graph, {
+  assert.deepEqual(graph.graph, {
     nodes: [
       {
         id: ":a",
