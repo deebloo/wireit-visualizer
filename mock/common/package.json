@@ -2,11 +2,9 @@
   "name": "@app/common",
   "wireit": {
     "build": {
-      "command": "echo 'build'",
       "dependencies": [
         "tsc",
-        "css",
-        "../core:build"
+        "css"
       ]
     },
     "css": {

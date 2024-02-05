@@ -50,11 +50,17 @@ export class Graph {
 
     // find any edges that reference the given task.
     // track all node ids for use when filtering nodes
+    // child nodes will always appear later in the array than their parents. This means a single iteration will grab all nodes we need
     for (let edge of this.#graph.edges) {
       if (edge.from === id || edge.to === id) {
         nodes.add(edge.to);
         nodes.add(edge.from);
-
+        data.edges.push(edge);
+      } else if (nodes.has(edge.from)) {
+        nodes.add(edge.to);
+        data.edges.push(edge);
+      } else if (nodes.has(edge.to)) {
+        nodes.add(edge.to);
         data.edges.push(edge);
       }
     }

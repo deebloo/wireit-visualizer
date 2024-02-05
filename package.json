@@ -68,9 +68,6 @@
       "output": [
         "target/**",
         "tsconfig.tsbuildinfo"
-      ],
-      "dependencies": [
-        "./mock/core:build"
       ]
     },
     "graphviz": {

@@ -99,6 +99,7 @@ export class WireitAnalyzer implements Analyzer {
         if (name && !ids.has(id)) {
           const ext = extname(name);
 
+          // TODO: was having some odd issues when using lstat. should investigate further
           const newFile: AnalyzedFile = {
             type: ext ? ext.substring(1) : "folder",
             id,
