@@ -56,11 +56,8 @@ export class Graph {
         nodes.add(edge.to);
         nodes.add(edge.from);
         data.edges.push(edge);
-      } else if (nodes.has(edge.from)) {
-        nodes.add(edge.to);
-        data.edges.push(edge);
       } else if (nodes.has(edge.to)) {
-        nodes.add(edge.to);
+        nodes.add(edge.from);
         data.edges.push(edge);
       }
     }
