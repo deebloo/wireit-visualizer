@@ -46,7 +46,7 @@
       ]
     },
     "test": {
-      "command": "node --test target",
+      "command": "node --test ./target/**/*.test.js",
       "files": [
         "target/**"
       ],
