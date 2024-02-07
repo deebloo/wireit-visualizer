@@ -42,7 +42,8 @@ export class Graph {
 
   graphFor(task: WireitTask) {
     const id = this.#createNodeId(task);
-    const nodes = new Set<string>();
+    const parents = new Set<string>();
+    const children = new Set<string>();
     const data: GraphData = {
       nodes: [],
       edges: [],
@@ -52,17 +53,26 @@ export class Graph {
     // track all node ids for use when filtering nodes
     // child nodes will always appear later in the array than their parents. This means a single iteration will grab all nodes we need
     for (let edge of this.#graph.edges) {
-      if (edge.from === id || edge.to === id) {
-        nodes.add(edge.to);
-        nodes.add(edge.from);
+      if (edge.to === id || edge.from === id) {
+        if (edge.to === id) {
+          data.edges.push(edge);
+          parents.add(edge.from);
+        }
+
+        if (edge.from === id) {
+          data.edges.push(edge);
+          children.add(edge.to);
+        }
+      } else if (children.has(edge.from) || children.has(edge.to)) {
         data.edges.push(edge);
-      } else if (nodes.has(edge.to)) {
-        nodes.add(edge.from);
-        data.edges.push(edge);
+        children.add(edge.to);
+        children.add(edge.from);
       }
     }
 
-    data.nodes = this.#graph.nodes.filter((node) => nodes.has(node.id));
+    data.nodes = this.#graph.nodes.filter(
+      (node) => children.has(node.id) || parents.has(node.id)
+    );
 
     return data;
   }
