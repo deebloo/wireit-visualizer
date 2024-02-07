@@ -56,7 +56,7 @@ test("should create graph", (t) => {
   });
 });
 
-test("should create graph from analyzer", async (t) => {
+test("should create graph from analyzer", async () => {
   const buildConfig: Record<string, AnalyzerResult> = {
     "./:a": {
       files: [],
@@ -96,5 +96,117 @@ test("should create graph from analyzer", async (t) => {
       },
     ],
     edges: [{ id: ":a-->:b", from: ":a", to: ":b" }],
+  });
+});
+
+test("should display immediate parents of task", async () => {
+  const buildConfig: Record<string, AnalyzerResult> = {
+    "./:1": {
+      files: [],
+      output: [],
+      dependencies: [
+        { name: "a", packageDir: "./" },
+        { name: "b", packageDir: "./" },
+      ],
+    },
+    "./:2": {
+      files: [],
+      output: [],
+      dependencies: [
+        { name: "a", packageDir: "./" },
+        { name: "b", packageDir: "./" },
+      ],
+    },
+    "./:3": {
+      files: [],
+      output: [],
+      dependencies: [
+        { name: "a", packageDir: "./" },
+        { name: "b", packageDir: "./" },
+      ],
+    },
+    "./:a": {
+      files: [],
+      output: [],
+      dependencies: [{ name: "c", packageDir: "./" }],
+    },
+    "./:b": {
+      files: [],
+      output: [],
+      dependencies: [],
+    },
+    "./:c": {
+      files: [],
+      output: [],
+      dependencies: [],
+    },
+  };
+
+  const graph = new Graph({
+    async analyze({ name, packageDir }: WireitTask) {
+      return buildConfig[`${packageDir}:${name}`];
+    },
+  });
+
+  await graph.analyze({ name: "a", packageDir: "./" });
+  await graph.analyze({ name: "b", packageDir: "./" });
+  await graph.analyze({ name: "c", packageDir: "./" });
+  await graph.analyze({ name: "1", packageDir: "./" });
+  await graph.analyze({ name: "2", packageDir: "./" });
+  await graph.analyze({ name: "3", packageDir: "./" });
+
+  assert.deepEqual(graph.graphFor({ name: "a", packageDir: "./" }), {
+    nodes: [
+      {
+        id: ":c",
+        wireit: {
+          files: [],
+          output: [],
+        },
+      },
+      {
+        id: ":1",
+        wireit: {
+          files: [],
+          output: [],
+        },
+      },
+      {
+        id: ":2",
+        wireit: {
+          files: [],
+          output: [],
+        },
+      },
+      {
+        id: ":3",
+        wireit: {
+          files: [],
+          output: [],
+        },
+      },
+    ],
+    edges: [
+      {
+        from: ":a",
+        id: ":a-->:c",
+        to: ":c",
+      },
+      {
+        from: ":1",
+        id: ":1-->:a",
+        to: ":a",
+      },
+      {
+        from: ":2",
+        id: ":2-->:a",
+        to: ":a",
+      },
+      {
+        from: ":3",
+        id: ":3-->:a",
+        to: ":a",
+      },
+    ],
   });
 });
