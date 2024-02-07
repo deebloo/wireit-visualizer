@@ -64,6 +64,9 @@ export class Graph {
           children.add(edge.to);
         }
       } else if (children.has(edge.from)) {
+        // only use nodes that are flowing FROM our root.
+        // checking for edge.to would mean siblings of the target not showing up
+
         data.edges.push(edge);
         children.add(edge.to);
         children.add(edge.from);
