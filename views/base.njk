@@ -48,6 +48,16 @@
         display: none;
       }
 
+      #reset {
+        display: none;
+        position: fixed;
+        top: 1rem;
+        right: 5rem;
+      }
+
+      #reset sl-icon {
+        font-size: 1.5rem;
+      }
     </style>
 
     <sl-dropdown>
@@ -65,6 +75,10 @@
       </sl-menu>
     </sl-dropdown>
 
+    <sl-button id="reset" title="reset">
+      <sl-icon slot="prefix" name="x-circle"></sl-icon>
+    </sl-button>
+
     <main>
       <div id="mynetwork"></div>
 
@@ -73,7 +87,6 @@
       {% block main %} {% endblock %}
     </main>
 
-
     <sl-drawer></sl-drawer>
 
     <script type="module" data-shoelace="/@shoelace-style/shoelace/cdn/">
@@ -81,5 +94,17 @@
     </script>
 
     <script type="module" src="/app.js"></script>
+
+    <script type="module">
+      const reset = document.getElementById("reset");
+
+      if (window.location.search) {
+        reset.style.display = "inline-block";
+      }
+
+      reset.addEventListener("click", () => {
+        window.location.search = "";
+      });
+    </script>
   </body>
 </html>
