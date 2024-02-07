@@ -43,8 +43,7 @@ export class Graph {
   graphFor(task: WireitTask) {
     const id = this.#createNodeId(task);
     const parents = new Set<string>(); // parents are tracked separately to avoid returning an unexpected branch
-    const children = new Set<string>(); // immediate children
-    const decendents = new Set<string>(); // all others
+    const children = new Set<string>();
     const data: GraphData = {
       nodes: [],
       edges: [],
