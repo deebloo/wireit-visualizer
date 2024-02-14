@@ -74,7 +74,7 @@ export class Graph {
     }
 
     data.nodes = this.#graph.nodes.filter(
-      (node) => children.has(node.id) || parents.has(node.id)
+      (node) => node.id === id || children.has(node.id) || parents.has(node.id)
     );
 
     return data;

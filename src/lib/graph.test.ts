@@ -158,6 +158,13 @@ test("should display immediate parents of task", async () => {
   assert.deepEqual(graph.graphFor({ name: "a", packageDir: "./" }), {
     nodes: [
       {
+        id: ":a",
+        wireit: {
+          files: [],
+          output: [],
+        },
+      },
+      {
         id: ":c",
         wireit: {
           files: [],
