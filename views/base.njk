@@ -28,20 +28,22 @@
         visibility: hidden;
       }
 
-      sl-dropdown {
+      #mynetwork {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+
+      .actions {
+        display: flex;
+        gap: 1rem;
         position: fixed;
         top: 1rem;
         right: 1rem;
       }
 
-      sl-dropdown sl-icon {
+      .actions sl-icon {
         font-size: 1.5rem;
-      }
-
-      #mynetwork {
-        width: 100%;
-        height: 100%;
-        display: block;
       }
 
       #mynetworkconfig {
@@ -50,34 +52,33 @@
 
       #reset {
         display: none;
-        position: fixed;
-        top: 1rem;
-        right: 5rem;
-      }
-
-      #reset sl-icon {
-        font-size: 1.5rem;
       }
     </style>
 
-    <sl-dropdown>
-      <sl-button slot="trigger">
-        <sl-icon slot="prefix" name="gear"></sl-icon>
+    <div class="actions">
+      <sl-button id="reset" title="reset">
+        <sl-icon slot="prefix" name="x-circle"></sl-icon>
       </sl-button>
 
-      <sl-menu>
-        <sl-menu-item value="graphviz">Graphviz</sl-menu-item>
-        <sl-menu-item value="mermaid">Mermaid</sl-menu-item>
+      <sl-button id="search" title="search">
+        <sl-icon slot="prefix" name="search"></sl-icon>
+      </sl-button>
 
-        <sl-divider></sl-divider>
+      <sl-dropdown>
+        <sl-button slot="trigger">
+          <sl-icon slot="prefix" name="gear"></sl-icon>
+        </sl-button>
 
-        <sl-menu-item value="copy">Copy</sl-menu-item>
-      </sl-menu>
-    </sl-dropdown>
+        <sl-menu>
+          <sl-menu-item value="graphviz">Graphviz</sl-menu-item>
+          <sl-menu-item value="mermaid">Mermaid</sl-menu-item>
 
-    <sl-button id="reset" title="reset">
-      <sl-icon slot="prefix" name="x-circle"></sl-icon>
-    </sl-button>
+          <sl-divider></sl-divider>
+
+          <sl-menu-item value="copy">Copy</sl-menu-item>
+        </sl-menu>
+      </sl-dropdown>
+    </div>
 
     <main>
       <div id="mynetwork"></div>
