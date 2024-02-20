@@ -55,11 +55,13 @@ export class Graph {
     for (let edge of this.#graph.edges) {
       if (edge.to === id || edge.from === id) {
         if (edge.to === id) {
+          // if the TO node matches the id we need to track the FROM id
           data.edges.push(edge);
           parents.add(edge.from);
         }
 
         if (edge.from === id) {
+          // if the FROM node matches the id we need to track the TO id
           data.edges.push(edge);
           children.add(edge.to);
         }
